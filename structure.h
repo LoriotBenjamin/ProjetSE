@@ -2,6 +2,7 @@
 #define STRUCTURE_H
 
 #include <stdio.h>
+#include "constantes.h"
 
 typedef struct Disk Disk;
 typedef struct Inode Inode;
@@ -14,13 +15,14 @@ struct Disk {
 };
 
 struct Inode {
-	char name[30];
-	char permissions[8]; // rwxr--r--
+	char name[NAME_SIZE];
+	char permissions[PERMISSION_SIZE];
 	int type; // 1 = texte, 2 = binaire , ...
 	int blockUsed[30]; // quels sont les blocs utilisés (max 30 ici)
-	RepertoryBloc* repertoryBloc;  
-	struct Inode* previousInode;
-	struct Inode* nextInode;
+	RepertoryBloc* repertoryBloc;
+	DataBloc* dataBloc;  
+	Inode* previousInode;
+	Inode* nextInode;
 };
 
 struct RepertoryBloc {
@@ -29,7 +31,7 @@ struct RepertoryBloc {
 };
 
 struct DataBloc {
-	char data[1024]; // par exemple 1024 octets 
+	char data[DATA_BLOC_SIZE];
 };
 
 #endif // STRUCTURE_H

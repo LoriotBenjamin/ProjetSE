@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -W -Wall
 EXEC = main
-OBJS = main.o SGF.o
+OBJS = main.o SGF.o primitives.o
  
 all: $(EXEC)
  
@@ -13,6 +13,9 @@ main.o: main.c
          
 SGF.o: SGF.c SGF.h
 	$(CC) $(CFLAGS) -c SGF.c -o SGF.o
+	
+primitives.o: primitives.c primitives.h
+	$(CC) $(CFLAGS) -c primitives.c -o primitives.o
  
 clean:
 	rm *.o

@@ -3,10 +3,10 @@
 #include <string.h>
 #include "structure.h"
 #include "SGF.h"
+#include "primitives.h"
 
 int main (){
-
-
+		
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
@@ -14,6 +14,8 @@ int main (){
 		Disk disk;
 		initialize_disk(&disk);
 		load_disk(&disk);
+		
+		createFile(&disk, "firstFile.txt");
 
 		printf("user@user ");
 
