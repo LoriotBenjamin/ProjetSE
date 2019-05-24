@@ -7,15 +7,14 @@
 
 int main (){
 		
+	Disk disk;
+	initialize_disk(&disk);
+	load_disk(&disk);
+	createFile(&disk, "firstFile.txt");
+	
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
-		
-		Disk disk;
-		initialize_disk(&disk);
-		load_disk(&disk);
-		
-		createFile(&disk, "firstFile.txt");
 
 		printf("user@user ");
 
@@ -37,7 +36,16 @@ int main (){
 		printf("arg1: %s\n", arg1 );
 		printf("arg2: %s\n", arg2 );
 
+
+		if(strcmp(nameOrder,"touch") == 0)
+			if(strcmp(arg1,"\0"))
+				createFile(&disk,arg1);
+			else
+				printf("erreur il faut entrer un nom de fichier \n");
+
 		// traitement de la commande 
 	}
 	return 0; 
 }
+
+
