@@ -4,14 +4,22 @@
 #include <stdio.h>
 #include "constantes.h"
 
+typedef struct InodeList InodeList;
 typedef struct Disk Disk;
 typedef struct Inode Inode;
 typedef struct RepertoryBloc RepertoryBloc;
 typedef struct DataBloc DataBloc;
 
+
+struct InodeList{
+	Inode *first;
+	int nb;
+};
+
 struct Disk {
-	Inode* inodes; // 15 inodes
-	//DataBloc* dataBloc; // 30 blocs de 1024 octets 
+	//Inode* inodes; // 15 inodes
+	DataBloc* dataBloc; // 30 blocs de 1024 octets 
+	InodeList inodesList;
 };
 
 struct Inode {
@@ -24,6 +32,8 @@ struct Inode {
 	Inode* previousInode;
 	Inode* nextInode;
 };
+
+
 
 struct RepertoryBloc {
 	 Inode* tableInode;

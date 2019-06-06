@@ -10,7 +10,7 @@ int main (){
 	Disk disk;
 	initialize_disk(&disk);
 	load_disk(&disk);
-	createFile(&disk, "firstFile.txt");
+	//createFile(&disk, "firstFile.txt");
 	
 	while(1){
 
@@ -38,8 +38,11 @@ int main (){
 
 
 		if(strcmp(nameOrder,"touch") == 0)
-			if(strcmp(arg1,"\0"))
+			if(strcmp(arg1,"\0")){
 				createFile(&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+			}
+
 			else
 				printf("erreur il faut entrer un nom de fichier \n");
 
