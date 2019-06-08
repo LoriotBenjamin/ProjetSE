@@ -9,15 +9,15 @@ int main (){
 		
 	Disk disk;
 	initialize_disk(&disk);
-	load_disk(&disk);
+	//load_disk(&disk);
 	//createFile(&disk, "firstFile.txt");
-	Inode* courant;
-	courant= disk.inodesList.first;
+	Inode courant;
+	courant= disk.listeDesInodes[0];
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
 
-		printf("user@%s ",courant->name);
+		printf("user@%s ",courant.name);
 
 		char nameOrder[40]="\0";
 
@@ -40,18 +40,18 @@ int main (){
 
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
-				createFile(courant,&disk,arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+				createFile(&courant,&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
 		}else if(strcmp(nameOrder,"ls") == 0){
-			afficherRepertoire(courant->repertoryBloc);
+			afficherRepertoire(&courant,&disk);
 			printf("pas encore faites");
 
 		}else if(strcmp(nameOrder,"mkdir") == 0){
 			if(strcmp(arg1,"\0")){
-				createRepertory(courant,&disk,arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+				createRepertory(&courant,&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
 		}else

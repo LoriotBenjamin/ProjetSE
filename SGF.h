@@ -18,9 +18,13 @@ void initialize_disk(Disk* disk);
 
 void init_permissions(Inode* inode);
 
-void ajoutInode(Disk *disk);
+//void ajoutInode(Disk *disk);
 
 Inode *get_inode(int inodenum, Disk *disk);
+
+void ajoutInode(Inode inode,Inode*	 inodeParent);
+
+void ajoutInodeDisk(Inode inode,Disk* disk);
 
 
 #endif // SGF_H
