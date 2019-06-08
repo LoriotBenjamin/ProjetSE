@@ -45,7 +45,7 @@ int main (){
 			}
 
 		}else if(strcmp(nameOrder,"ls") == 0){
-			afficherRepertoire(courant->repertoryBloc);
+			afficherRepertoire(courant,&disk);
 			printf("pas encore faites");
 
 		}else if(strcmp(nameOrder,"mkdir") == 0){

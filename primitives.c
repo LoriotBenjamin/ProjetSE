@@ -13,7 +13,8 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {
 
 	Inode *inode = get_inode(disk->inodesList.nb-1 , disk);
 
-	strcpy(inode->name, name);
+	strcpy(inode->name, "test");
+	
 	inode->type = TYPE_FICHIER;
 
 	init_permissions(inode);
@@ -23,13 +24,24 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {
 		inode->dataBloc = dataBloc; 
 		inode->previousInode = inodeParent;
 		printf("coucou");
-		inodeParent->repertoryBloc = realloc(inodeParent->repertoryBloc, inodeParent->repertoryBloc->nbInode+1 * sizeof(RepertoryBloc));
-		inodeParent->repertoryBloc->nbInode++;
-		inodeParent->repertoryBloc[inodeParent->repertoryBloc->nbInode]=inode;
+		//inodeParent->repertoryBloc->tableInode = realloc(inodeParent->repertoryBloc->tableInode, inodeParent->repertoryBloc->nbInode+1 * sizeof(Inode));
+		//inodeParent->repertoryBloc->nbInode++;
+		//inodeParent->repertoryBloc->tableInode[inodeParent->repertoryBloc->nbInode]=inode;
 	}
-	
-	// comment savoir à quel dossier appartient ce fichier ?
 }
+	// comment savoir à quel dossier appartient ce fichier ?
+
+
+void afficherRepertoire(Inode* courant,Disk* disk)
+{	
+		
+		for(int i=0;i<(disk->inodesList.nb);i++)
+		{
+			printf(" %s \n",disk->inodesList.first[i].name);
+	
+		}
+}
+/*
 void afficherRepertoire(RepertoryBloc* repertory)
 {
 		for(int i=0;i<(repertory->nbInode);i++)
@@ -40,7 +52,7 @@ void afficherRepertoire(RepertoryBloc* repertory)
 			}
 			printf("\n");
 		}
-}
+}*/
 /*
 void creerRepertoire(char* name) 
 {
@@ -64,8 +76,7 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {
 	if(inodeParent->type == TYPE_REPERTOIRE){
 		
 		
-		inode->repertoryBloc = malloc(sizeof(RepertoryBloc)); 
+		//inode->repertoryBloc = malloc(sizeof(RepertoryBloc)); 
 		inode->previousInode = inodeParent;
 	}
-
 }
