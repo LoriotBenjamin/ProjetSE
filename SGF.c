@@ -25,6 +25,7 @@ void initialize_disk(Disk* disk){
   //mise a jour du nombre d'éléments
   disk->nombreDinode += 1;
 
+
 	printf("Success of the disk initialization\n");
 }
 
@@ -54,6 +55,7 @@ void load_disk(Disk* disk){
 // ***** inode functions *****
 
 void init_permissions(Inode* inode) {
+  /*
 	char mode[3] = {'r', 'w', 'x'};
 	int nbUsers = 0;
 	while(nbUsers <= 3) {
@@ -61,13 +63,13 @@ void init_permissions(Inode* inode) {
 			inode->permissions[nbUsers * 3 + i] = mode[i];
 		}
 		nbUsers++;
-	}
+	}*/
 }
 void ajoutInodeDisk(Inode inode,Disk* disk){
 
 
   if(disk->nombreDinode < 200){
-    disk->listeDesInodes[disk->nombreDinode+1] = inode; 
+    disk->listeDesInodes[disk->nombreDinode] = inode; 
     disk->nombreDinode+=1;
   }else{
     printf("plus d'espace disque");
@@ -78,7 +80,7 @@ void ajoutInode(Inode inode,Inode* inodeParent){
 
 
   if(inodeParent->repertoryBloc->nbDeMesInode < 30){
-    inodeParent->repertoryBloc->mesInodes[inodeParent->repertoryBloc->nbDeMesInode+1] = inode; 
+    inodeParent->repertoryBloc->mesInodes[inodeParent->repertoryBloc->nbDeMesInode] = inode; 
     inodeParent->repertoryBloc->nbDeMesInode+=1;
   }else{
     printf("plus d'espace disque");

@@ -9,7 +9,7 @@ int main (){
 		
 	Disk disk;
 	initialize_disk(&disk);
-	//load_disk(&disk);
+	load_disk(&disk);
 	//createFile(&disk, "firstFile.txt");
 	Inode courant;
 	courant= disk.listeDesInodes[0];

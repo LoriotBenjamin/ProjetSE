@@ -4,14 +4,11 @@
 #include <stdio.h>
 #include "constantes.h"
 
-typedef struct InodeList InodeList;
+//typedef struct InodeList InodeList;
 typedef struct Disk Disk;
 typedef struct Inode Inode;
 typedef struct RepertoryBloc RepertoryBloc;
 typedef struct DataBloc DataBloc;
-
-
-
 
 
 struct Inode {
@@ -19,6 +16,7 @@ struct Inode {
 	char permissions[PERMISSION_SIZE];
 	int type; // 1 = texte, 2 = binaire , ...
 	int blockUsed[30]; // quels sont les blocs utilisés (max 30 ici)
+	int test;
 	RepertoryBloc* repertoryBloc;
 	DataBloc* dataBloc;  
 	Inode* previousInode;
