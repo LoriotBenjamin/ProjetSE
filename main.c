@@ -61,6 +61,10 @@ int main(){
 			afficherRepertoire(&courant,&disk);
 		
 
+		}else if(strcmp(nameOrder,"pwd") == 0){
+			showCurrentRepository(courant);
+		
+
 		}else if(strcmp(nameOrder,"mkdir") == 0){
 			if(strcmp(arg1,"\0")){
 				createRepertory(&courant,&disk,arg1);

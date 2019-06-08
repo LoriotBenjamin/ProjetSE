@@ -81,7 +81,9 @@ void changerRepertoire(char* arg1,Inode* courant)	// 				cd
 
 		
 }
-
+void showCurrentRepository(Inode courant){
+	printf("%s \n",courant.name);
+}
 void afficherRepertoire(Inode* courant,Disk* disk) // 				ls
 {		
 		
