@@ -6,9 +6,34 @@
 
 void initialize_disk(Disk* disk){	
 
-	disk-> inodesList . first = NULL;
+	disk-> inodesList.first = NULL;
 	disk-> inodesList.nb=0;
-	//disk->dataBloc = NULL;
+
+  //////////////////////////////
+	Inode *new = malloc(sizeof(Inode));
+
+  Inode *last =  disk->inodesList.first;
+  new->nextInode = NULL;
+  new->type=TYPE_REPERTOIRE;
+  strcpy(new->name,"/"); //racine 
+  
+  //PERMISSIONS a faire ici
+
+  //ajout dans la liste:
+  if (disk->inodesList.first == NULL)
+  {
+    disk->inodesList.first = new;
+    disk->inodesList.nb = 1;
+    return;
+  }
+  while (last->nextInode != NULL)
+    last = last->nextInode;
+  last->nextInode = new;
+  
+  //mise a jour du nombre d'éléments
+  disk->inodesList.nb += 1;
+
+  //////////////////////////////
 
 	printf("Success of the disk initialization\n");
 }

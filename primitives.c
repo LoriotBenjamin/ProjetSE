@@ -1,4 +1,4 @@
-‘#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -6,7 +6,7 @@
 #include "SGF.h"
 #include "primitives.h"
 
-void createFile(Disk* disk, char* name) {
+void createFile(Inode* inodeParent,Disk* disk, char* name) {
 	
 	ajoutInode(disk);
 
@@ -14,13 +14,19 @@ void createFile(Disk* disk, char* name) {
 	Inode *inode = get_inode(disk->inodesList.nb-1 , disk);
 
 	strcpy(inode->name, name);
-	inode->type = 0;
+	inode->type = TYPE_FICHIER;
 
 	init_permissions(inode);
-	
-	//Pas trop compris la suite, j'sais pas si c'est bon :o
-	DataBloc* dataBloc = malloc(sizeof(DataBloc));
-	inode->dataBloc = dataBloc; 
+	if(inodeParent->type == TYPE_REPERTOIRE){
+		//Pas trop compris la suite, j'sais pas si c'est bon :o
+		DataBloc* dataBloc = malloc(sizeof(DataBloc));
+		inode->dataBloc = dataBloc; 
+		inode->previousInode = inodeParent;
+		printf("coucou");
+		inodeParent->repertoryBloc = realloc(inodeParent->repertoryBloc, inodeParent->repertoryBloc->nbInode+1 * sizeof(RepertoryBloc));
+		inodeParent->repertoryBloc->nbInode++;
+		inodeParent->repertoryBloc[inodeParent->repertoryBloc->nbInode]=inode;
+	}
 	
 	// comment savoir à quel dossier appartient ce fichier ?
 }
@@ -30,11 +36,12 @@ void afficherRepertoire(RepertoryBloc* repertory)
 		{
 			for(int j=0;j<NAME_SIZE;j++)
 			{
-				printf("%c",repertory->tableInode[i]->name[j]);
+				printf("%c",repertory->tableInode[i].name[j]);
 			}
 			printf("\n");
 		}
 }
+/*
 void creerRepertoire(char* name) 
 {
 	ajoutInode(disk);
@@ -42,4 +49,23 @@ void creerRepertoire(char* name)
 	inode->type = 2; 
 	RepertoryBloc* repertoryBloc=malloc(sizeof(RepertoryBloc));
 	inode->repertoryBloc=repertoryBloc;
+}*/
+void createRepertory(Inode* inodeParent,Disk* disk, char* name) {
+	
+	ajoutInode(disk);
+
+
+	Inode *inode = get_inode(disk->inodesList.nb-1 , disk);
+
+	strcpy(inode->name, name);
+	inode->type = TYPE_REPERTOIRE;
+
+	init_permissions(inode);
+	if(inodeParent->type == TYPE_REPERTOIRE){
+		
+		
+		inode->repertoryBloc = malloc(sizeof(RepertoryBloc)); 
+		inode->previousInode = inodeParent;
+	}
+
 }

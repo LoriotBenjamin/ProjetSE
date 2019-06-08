@@ -11,12 +11,13 @@ int main (){
 	initialize_disk(&disk);
 	load_disk(&disk);
 	//createFile(&disk, "firstFile.txt");
-	
+	Inode* courant;
+	courant= disk.inodesList.first;
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
 
-		printf("user@user ");
+		printf("user@%s ",courant->name);
 
 		char nameOrder[40]="\0";
 
@@ -37,14 +38,24 @@ int main (){
 		printf("arg2: %s\n", arg2 );
 
 
-		if(strcmp(nameOrder,"touch") == 0)
+		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
-				createFile(&disk,arg1);
+				createFile(courant,&disk,arg1);
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
 			}
 
-			else
-				printf("erreur il faut entrer un nom de fichier \n");
+		}else if(strcmp(nameOrder,"ls") == 0){
+			afficherRepertoire(courant->repertoryBloc);
+			printf("pas encore faites");
+
+		}else if(strcmp(nameOrder,"mkdir") == 0){
+			if(strcmp(arg1,"\0")){
+				createRepertory(courant,&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+			}
+
+		}else
+			printf("erreur il faut entrer un nom de fichier \n");
 
 		// traitement de la commande 
 	}

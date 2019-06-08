@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include "structure.h"
 
-void createFile(Disk* disk, char* name);	
+void createFile(Inode* inodeParent,Disk* disk, char* name);
 void afficherRepertoire(RepertoryBloc* repertory);
 void creerRepertoire(char* name);
 
+void createRepertory(Inode* inodeParent,Disk* disk, char* name);
 #endif // PRIMITIVES_H
