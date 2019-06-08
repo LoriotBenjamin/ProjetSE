@@ -46,12 +46,18 @@ int main (){
 
 		}else if(strcmp(nameOrder,"ls") == 0){
 			afficherRepertoire(&courant,&disk);
-			printf("pas encore faites");
+		
 
 		}else if(strcmp(nameOrder,"mkdir") == 0){
 			if(strcmp(arg1,"\0")){
 				createRepertory(&courant,&disk,arg1);
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
+			}
+
+		}else if(strcmp(nameOrder,"cd") == 0){
+			if(strcmp(arg1,"\0")){
+				courant=changerRepertoire(arg1,courant);
+				printf("DEBUG : mon papa : %s\n",courant.previousInode->name);
 			}
 
 		}else

@@ -13,6 +13,7 @@ void initialize_disk(Disk* disk){
 
   new.nextInode = NULL;
   new.type=TYPE_REPERTOIRE;
+  new.previousInode = NULL;
   new.repertoryBloc= malloc(sizeof(RepertoryBloc));
   new.repertoryBloc->nbDeMesInode=0;
   strcpy(new.name,"/"); //racine 
@@ -81,6 +82,7 @@ void ajoutInode(Inode inode,Inode* inodeParent){
 
   if(inodeParent->repertoryBloc->nbDeMesInode < 30){
     inodeParent->repertoryBloc->mesInodes[inodeParent->repertoryBloc->nbDeMesInode] = inode; 
+    printf("le nom de mon pere a peut etre change: %s \n",inode.previousInode->name);
     inodeParent->repertoryBloc->nbDeMesInode+=1;
   }else{
     printf("plus d'espace disque");
