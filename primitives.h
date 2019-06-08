@@ -14,5 +14,5 @@ void creerRepertoire(char* name);
 
 void createRepertory(Inode* inodeParent,Disk* disk, char* name);
 
-Inode changerRepertoire(char* arg1,Inode courant);
+void changerRepertoire(char* arg1,Inode* courant);
 #endif // PRIMITIVES_H

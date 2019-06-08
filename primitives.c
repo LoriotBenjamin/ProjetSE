@@ -6,7 +6,7 @@
 #include "SGF.h"
 #include "primitives.h"
 
-void createFile(Inode* inodeParent,Disk* disk, char* name) {
+void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 
 
 	Inode inode;
@@ -18,16 +18,15 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {
 	inode.type = TYPE_FICHIER;
 	inode.test = 12;
 
-	init_permissions(&inode);
+	//init_permissions(&inode);
 	
-	 printf("ici mon type est : %d",inode.type);
 	if(inodeParent->type == TYPE_REPERTOIRE){
 		//Pas trop compris la suite, j'sais pas si c'est bon :o
 		DataBloc* dataBloc = malloc(sizeof(DataBloc));
 		inode.dataBloc = dataBloc; 
 	
 		inode.previousInode = inodeParent;
-		printf("coucou");
+	
 
 	}
 	ajoutInodeDisk(inode,disk);
@@ -36,37 +35,54 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {
 
 }
 	// comment savoir à quel dossier appartient ce fichier ?
-Inode changerRepertoire(char* arg1,Inode courant)
+void changerRepertoire(char* arg1,Inode* courant)	// 				cd 
 {		
 	if(strcmp(arg1,"..")==0){
-		if(courant.previousInode != NULL){
-			printf("mon pere est %s \n",courant.previousInode->name);
-			return *(courant.previousInode);
+		if(strcmp(arg1,"..")==0){
+			if(courant->previousInode != NULL){
+				printf("mon papoulle est : %s \n",courant->previousInode);
+				
+				if(courant->previousInode != NULL){
+					*courant = *(courant->previousInode);
+				}
+			}
+			else
+				printf("vous êtes a la racine \n");
 		}
-		else
-			printf("vous êtes a la racine \n");
 	}
 	else{
-		for(int i=0;i<(courant.repertoryBloc->nbDeMesInode);i++){
+		for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 				 
-			if(courant.repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant.repertoryBloc->mesInodes[i].name)==0){
+			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
+				
+				/*
 				printf("retour de la fonction pour %s et %s est %d \n",arg1,courant.repertoryBloc->mesInodes[i].name,strcmp(arg1,courant.repertoryBloc->mesInodes[i].name) );
-				courant.repertoryBloc->mesInodes[i].previousInode = &courant;
-				printf("mon pere est %s \n",courant.repertoryBloc->mesInodes[i].name);
+				
+				printf("mon papou est %s \n",courant.previousInode->name);
+
+				printf("ça devrait etre la racine et %s \n",courant.repertoryBloc->mesInodes[i].previousInode->name);
+
 				Inode ino = courant.repertoryBloc->mesInodes[i];
-				printf("mon pere est %s \n",courant.previousInode->name);
-				return ino;
+				printf("je retourne %s \n",ino.name);
+				printf("mon papa du retour %s  \n",ino.previousInode->name);
+				*/
+				Inode inoPere = *courant;
+				*courant= courant->repertoryBloc->mesInodes[i];
+				courant->previousInode= &inoPere;
+				break;
+
 			}
 			
-				
+			printf("DEBUG : mon papa name : %s\n",courant->previousInode->name);
 		}
+		
 	}
-	printf("pas de repertoire du nom de %s \n",arg1);
-	return courant;
+
+
 		
 }
 
-void afficherRepertoire(Inode* courant,Disk* disk)
+void afficherRepertoire(Inode* courant,Disk* disk) // 				ls
 {		
 		
 		printf(" je suis : %s \n",courant->name);
@@ -80,28 +96,8 @@ void afficherRepertoire(Inode* courant,Disk* disk)
 		}
 		printf("\n");
 }
-/*
-void afficherRepertoire(RepertoryBloc* repertory)
-{
-		for(int i=0;i<(repertory->nbInode);i++)
-		{
-			for(int j=0;j<NAME_SIZE;j++)
-			{
-				printf("%c",repertory->tableInode[i].name[j]);
-			}
-			printf("\n");
-		}
-}*/
-/*
-void creerRepertoire(char* name) 
-{
-	ajoutInode(disk);
-	Inode *inode = get_inode(disk->inodesList.nb-1 , disk);
-	inode->type = 2; 
-	RepertoryBloc* repertoryBloc=malloc(sizeof(RepertoryBloc));
-	inode->repertoryBloc=repertoryBloc;
-}*/
-void createRepertory(Inode* inodeParent,Disk* disk, char* name) {
+
+void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 	
 	Inode inode ;
 
@@ -111,7 +107,7 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {
 	
 	inode.type = TYPE_REPERTOIRE;
 
-	init_permissions(&inode);
+	//init_permissions(&inode);
 	if(inodeParent->type == TYPE_REPERTOIRE){
 		//Pas trop compris la suite, j'sais pas si c'est bon :o
 		DataBloc* dataBloc = malloc(sizeof(DataBloc));
@@ -123,6 +119,8 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {
   		inode.repertoryBloc->nbDeMesInode=0;
 
 	}
+	printf("le nom de mon pére est33 : %s \n",inodeParent->name);
+		printf("j'ia enregistre: %s \n",inode.previousInode->name);
 	ajoutInodeDisk(inode,disk);
 	ajoutInode(inode,inodeParent);
 }

@@ -11,6 +11,7 @@ typedef struct RepertoryBloc RepertoryBloc;
 typedef struct DataBloc DataBloc;
 
 
+
 struct Inode {
 	char name[NAME_SIZE];
 	char permissions[PERMISSION_SIZE];
@@ -22,6 +23,7 @@ struct Inode {
 	Inode* previousInode;
 	Inode* nextInode;
 };
+
 
 struct Disk {
 	//Inode* inodes; // 15 inodes

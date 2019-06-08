@@ -1,20 +1,18 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-
-#include "constantes.h"
+#include "structure.h"
 #include "SGF.h"
 #include "primitives.h"
-#include "structure.h"
-int main(){
+
+int main (){
+		
 	Disk disk;
 	initialize_disk(&disk);
 	load_disk(&disk);
 	//createFile(&disk, "firstFile.txt");
 	Inode courant;
-	Inode pere; 
 	courant= disk.listeDesInodes[0];
-
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
@@ -46,17 +44,6 @@ int main(){
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
-		}else if(strcmp(nameOrder,"cd") == 0){
-			if(strcmp(arg1,"\0")){
-				
-					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);	// todo ici le pére est déja perdu
-
-					changerRepertoire(arg1,&courant);
-					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
-					printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
-					printf("DEBUG : je suis : %s\n",courant.name);
-			}
-
 		}else if(strcmp(nameOrder,"ls") == 0){
 			afficherRepertoire(&courant,&disk);
 		
@@ -67,6 +54,14 @@ int main(){
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
+		}else if(strcmp(nameOrder,"cd") == 0){
+			if(strcmp(arg1,"\0")){
+				changerRepertoire(arg1,&courant);
+				printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
+				printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
+				printf("DEBUG : je suis : %s\n",courant.name);
+			}
+
 		}else
 			printf("erreur il faut entrer un nom de fichier \n");
 
@@ -74,3 +69,5 @@ int main(){
 	}
 	return 0; 
 }
+
+
