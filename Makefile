@@ -1,12 +1,12 @@
 CC = gcc
-CFLAGS = -W -Wall -g
+CFLAGS = -W -Wall
 EXEC = main
 OBJS = main.o SGF.o primitives.o
  
 all: $(EXEC)
  
 $(EXEC): $(OBJS) 
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJS) 
+	$(CC) $(CFLAGS) -o $(EXEC) $(OBJS)
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o main.o

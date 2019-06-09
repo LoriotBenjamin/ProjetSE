@@ -5,7 +5,8 @@
 #include "constantes.h"
 #include "SGF.h"
 #include "primitives.h"
-#include "structure.h"
+
+
 int main(){
 	Disk disk;
 	initialize_disk(&disk);
@@ -94,6 +95,8 @@ int main(){
 		}
 
 		// traitement de la commande 
-	}
+
+		afficherAllInodes(&disk);
+	}// fin du shell
 	return 0; 
 }

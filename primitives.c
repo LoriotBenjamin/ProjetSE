@@ -52,6 +52,17 @@ void supprimeFichier (Inode* courant,char* arg1,Disk* disk){
 	
 }
 
+// pour le débug 
+void afficherAllInodes(Disk* disk){
+
+	printf(" liste des inodes: ");
+	for(int i=0;i<(disk->nombreDinode);i++)
+		printf(" %s  ",disk->listeDesInodes[i].name);
+	printf("\n");
+	
+
+}
+
 void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
 	printf("nom de tout mes inodes \n");
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
