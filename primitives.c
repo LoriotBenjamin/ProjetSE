@@ -12,6 +12,10 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 	Inode inode;
 
 	int i =0;
+
+	for(i=0;i< (inodeParent->repertoryBloc->nbDeMesInode);i++){
+
+	}
 	
 	strcpy(inode.name, name);
 	
@@ -26,8 +30,6 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 		inode.dataBloc = dataBloc; 
 	
 		inode.previousInode = inodeParent;
-	
-
 	}
 	ajoutInodeDisk(inode,disk);
 
@@ -137,10 +139,25 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 
 	}
 	
+
+}
+
+void chercheCibleChemin (char* arg){
+	char* tab[200];// si tout les inodes sont mit bout à bout sachant qu'on ne peut qu'en avoir 200
+	char* cs =NULL;
+	int nombreDeSeparateur = 0;
+	for(int i=0;i<strlen(arg);i++){
+		if(arg[i] == 47)//  code ASCII du /
+			nombreDeSeparateur++;
+	}	
+	for(int i=0;i<nombreDeSeparateur;i++){
+		tab[i]=strtok(arg,"/");
+	}
+	printf("il y a %d \n",nombreDeSeparateur);
 }
 
 void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd 
-{		
+{
 	if(strcmp(arg1,"..")==0){
 		if(strcmp(arg1,"..")==0){
 			if(courant->previousInode != NULL){
@@ -163,17 +180,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 				 
 			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
 				
-				/*
-				printf("retour de la fonction pour %s et %s est %d \n",arg1,courant.repertoryBloc->mesInodes[i].name,strcmp(arg1,courant.repertoryBloc->mesInodes[i].name) );
 				
-				printf("mon papou est %s \n",courant.previousInode->name);
-
-				printf("ça devrait etre la racine et %s \n",courant.repertoryBloc->mesInodes[i].previousInode->name);
-
-				Inode ino = courant.repertoryBloc->mesInodes[i];
-				printf("je retourne %s \n",ino.name);
-				printf("mon papa du retour %s  \n",ino.previousInode->name);
-				*/
 				Inode tampon = *courant;
 
 				

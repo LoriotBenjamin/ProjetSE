@@ -33,7 +33,7 @@ struct Disk {
 };
 
 struct RepertoryBloc {
-	 Inode mesInodes[20];
+	 Inode mesInodes[20];	// 20 inodes max par dossier 
 	 int nbDeMesInode ;
 };
 

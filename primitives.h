@@ -25,4 +25,6 @@ void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk);
 void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer);
 
 void afficherAllInodes(Disk* disk);
+
+void chercheCibleChemin (char* arg);
 #endif // PRIMITIVES_H
