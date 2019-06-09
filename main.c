@@ -59,7 +59,7 @@ int main(){
 
 		}else if(strcmp(nameOrder,"rm") == 0){
 			if(strcmp(arg1,"\0")){
-				supprimeFile(&courant,arg1,&disk);
+				supprime(&courant,arg1,&disk);
 			}
 
 		}else if(strcmp(nameOrder,"ls") == 0){
