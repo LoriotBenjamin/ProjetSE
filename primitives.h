@@ -20,5 +20,5 @@ void showCurrentRepository(Inode courant);
 
 void supprime (Inode* courant,char* arg1,Disk* disk);
 
-void supprimeFileDisk(char* arg1,Disk* disk);
+void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer);
 #endif // PRIMITIVES_H

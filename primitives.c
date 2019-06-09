@@ -36,10 +36,10 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 }
 
 void supprime (Inode* courant,char* arg1,Disk* disk){
-	supprimeFileDisk(arg1,disk);
+	
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
-	
+			supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
 			
 			courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
 			for(i;i<(courant->repertoryBloc->nbDeMesInode);i++){// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
@@ -50,8 +50,9 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 			}
 
 		}else if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
-			if(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode == 0){// pas de fils
 
+			if(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode == 0){// pas de fils
+				supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
 				courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
 				for(i;i<(courant->repertoryBloc->nbDeMesInode);i++){	// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
 					 // si on arrive au bout du tableau
@@ -61,6 +62,7 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 				}
 
 			}else{	// le repertoir a des fils 
+					//supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type); à voir 
 					Inode inodePourSupprimer;
 					for(int i=0;i<(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode);i++){ // suppresion des fils
 
@@ -84,10 +86,10 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 
 
 
-void supprimeFileDisk(char* arg1,Disk* disk){
+void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 
 	for(int i=0;i<(disk->nombreDinode);i++){
-		if(disk->listeDesInodes[i].type==TYPE_FICHIER && strcmp(arg1,disk->listeDesInodes[i].name)==0){
+		if(strcmp(arg1,disk->listeDesInodes[i].name)==0 && typeAEffacer ==disk->listeDesInodes[i].type ){
 	
 			
 			disk->nombreDinode = disk->nombreDinode-1;
