@@ -84,13 +84,12 @@ int main(){
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
-		}else if(strcmp(nameOrder,"quitter") == 0){
-            		printf("je vais quitter\n");
-            		save_disk(&disk);
-		    	break;
+		}else if(strcmp(nameOrder,"exit") == 0){
+            //save_disk(&disk);
+		    return 0;
 
 		}else{
-			printf("erreur il faut entrer un nom de fichier \n");
+			printf("%s : command not found\n", nameOrder);
 
 		}
 
