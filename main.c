@@ -1,23 +1,25 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "structure.h"
+
+#include "constantes.h"
 #include "SGF.h"
 #include "primitives.h"
-
-int main (){
-		
+#include "structure.h"
+int main(){
 	Disk disk;
 	initialize_disk(&disk);
 	load_disk(&disk);
 	//createFile(&disk, "firstFile.txt");
-	Inode* courant;
-	courant= disk.inodesList.first;
+	Inode courant;
+	Inode pere; 
+	courant= disk.listeDesInodes[0];
+
 	while(1){
 
 		//printf("%d",sizeof(unbloc));
 
-		printf("user@%s ",courant->name);
+		printf("user@%s ",courant.name);
 
 		char nameOrder[40]="\0";
 
@@ -40,18 +42,38 @@ int main (){
 
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
-				createFile(courant,&disk,arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+				createFile(&courant,&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
+			}
+
+		}else if(strcmp(nameOrder,"cd") == 0){
+			if(strcmp(arg1,"\0")){
+				
+					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);	// todo ici le pére est déja perdu
+
+					changerRepertoire(arg1,&courant);
+					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
+					printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
+					printf("DEBUG : je suis : %s\n",courant.name);
+			}
+
+		}else if(strcmp(nameOrder,"rm") == 0){
+			if(strcmp(arg1,"\0")){
+				supprime(&courant,arg1,&disk);
 			}
 
 		}else if(strcmp(nameOrder,"ls") == 0){
-			afficherRepertoire(courant,&disk);
-			printf("pas encore faites");
+			afficherRepertoire(&courant,&disk);
+		
+
+		}else if(strcmp(nameOrder,"pwd") == 0){
+			showCurrentRepository(courant);
+		
 
 		}else if(strcmp(nameOrder,"mkdir") == 0){
 			if(strcmp(arg1,"\0")){
-				createRepertory(courant,&disk,arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n",disk.inodesList.nb);
+				createRepertory(&courant,&disk,arg1);
+				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
 		}else
@@ -61,5 +83,3 @@ int main (){
 	}
 	return 0; 
 }
-
-

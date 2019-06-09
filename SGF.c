@@ -6,34 +6,26 @@
 
 void initialize_disk(Disk* disk){	
 
-	disk-> inodesList.first = NULL;
-	disk-> inodesList.nb=0;
+	disk->nombreDinode=0;
 
   //////////////////////////////
-	Inode *new = malloc(sizeof(Inode));
+	Inode new ;
 
-  Inode *last =  disk->inodesList.first;
-  new->nextInode = NULL;
-  new->type=TYPE_REPERTOIRE;
-  strcpy(new->name,"/"); //racine 
+  new.nextInode = NULL;
+  new.type=TYPE_REPERTOIRE;
+  new.previousInode = NULL;
+  new.repertoryBloc= malloc(sizeof(RepertoryBloc));
+  new.repertoryBloc->nbDeMesInode=0;
+  strcpy(new.name,"/"); //racine 
   
   //PERMISSIONS a faire ici
 
   //ajout dans la liste:
-  if (disk->inodesList.first == NULL)
-  {
-    disk->inodesList.first = new;
-    disk->inodesList.nb = 1;
-    return;
-  }
-  while (last->nextInode != NULL)
-    last = last->nextInode;
-  last->nextInode = new;
+  disk->listeDesInodes[disk->nombreDinode] = new;
   
   //mise a jour du nombre d'éléments
-  disk->inodesList.nb += 1;
+  disk->nombreDinode += 1;
 
-  //////////////////////////////
 
 	printf("Success of the disk initialization\n");
 }
@@ -64,6 +56,7 @@ void load_disk(Disk* disk){
 // ***** inode functions *****
 
 void init_permissions(Inode* inode) {
+  /*
 	char mode[3] = {'r', 'w', 'x'};
 	int nbUsers = 0;
 	while(nbUsers <= 3) {
@@ -71,9 +64,32 @@ void init_permissions(Inode* inode) {
 			inode->permissions[nbUsers * 3 + i] = mode[i];
 		}
 		nbUsers++;
-	}
+	}*/
 }
+void ajoutInodeDisk(Inode inode,Disk* disk){
 
+
+  if(disk->nombreDinode < 200){
+    disk->listeDesInodes[disk->nombreDinode] = inode; 
+    disk->nombreDinode+=1;
+  }else{
+    printf("plus d'espace disque");
+  }
+  
+}
+void ajoutInode(Inode inode,Inode* inodeParent){
+
+
+  if(inodeParent->repertoryBloc->nbDeMesInode < 30){
+    inodeParent->repertoryBloc->mesInodes[inodeParent->repertoryBloc->nbDeMesInode] = inode; 
+    printf("le nom de mon pere a peut etre change: %s \n",inode.previousInode->name);
+    inodeParent->repertoryBloc->nbDeMesInode+=1;
+  }else{
+    printf("plus d'espace disque");
+  }
+  
+}
+/*
 Inode *get_inode(int inodenum, Disk *disk)
 {//renvoie le maillon à l'indice précisé, si c'est possible
   if (inodenum == 0)
@@ -117,4 +133,4 @@ void ajoutInode(Disk *disk)
   
   //mise a jour du nombre d'éléments
   disk->inodesList.nb += 1;
-}
+}*/
