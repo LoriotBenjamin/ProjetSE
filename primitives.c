@@ -34,7 +34,48 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 	ajoutInode(inode,inodeParent);
 
 }
-	// comment savoir à quel dossier appartient ce fichier ?
+
+void supprimeFile (Inode* courant,char* arg1,Disk* disk){
+	supprimeFileDisk(arg1,disk);
+	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
+		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
+	
+			
+			courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
+			for(i;i<(courant->repertoryBloc->nbDeMesInode);i++){// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
+				 // si on arrive au bout du tableau
+				if(courant->repertoryBloc->mesInodes[i+1].type == TYPE_FICHIER || courant->repertoryBloc->mesInodes[i+1].type == TYPE_REPERTOIRE )
+					courant->repertoryBloc->mesInodes[i]=courant->repertoryBloc->mesInodes[i+1];
+				
+			}
+
+		}
+
+	}
+	
+}
+
+void supprimeFileDisk(char* arg1,Disk* disk){
+
+	for(int i=0;i<(disk->nombreDinode);i++){
+		if(disk->listeDesInodes[i].type==TYPE_FICHIER && strcmp(arg1,disk->listeDesInodes[i].name)==0){
+	
+			
+			disk->nombreDinode = disk->nombreDinode-1;
+			for(i;i<(disk->nombreDinode);i++){// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
+				 // si on arrive au bout du tableau
+				if(disk->listeDesInodes[i+1].type == TYPE_FICHIER || disk->listeDesInodes[i+1].type == TYPE_REPERTOIRE )
+					disk->listeDesInodes[i]= disk->listeDesInodes[i+1];
+				
+			
+			}
+
+		}
+
+	}
+	
+}
+
 void changerRepertoire(char* arg1,Inode* courant)	// 				cd 
 {		
 	if(strcmp(arg1,"..")==0){
@@ -97,6 +138,7 @@ void afficherRepertoire(Inode* courant,Disk* disk) // 				ls
 				printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
 		}
 		printf("\n");
+
 }
 
 void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir

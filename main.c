@@ -57,6 +57,11 @@ int main(){
 					printf("DEBUG : je suis : %s\n",courant.name);
 			}
 
+		}else if(strcmp(nameOrder,"rm") == 0){
+			if(strcmp(arg1,"\0")){
+				supprimeFile(&courant,arg1,&disk);
+			}
+
 		}else if(strcmp(nameOrder,"ls") == 0){
 			afficherRepertoire(&courant,&disk);
 		

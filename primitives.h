@@ -17,4 +17,8 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name);
 void changerRepertoire(char* arg1,Inode* courant);
 
 void showCurrentRepository(Inode courant);
+
+void supprimeFile (Inode* courant,char* arg1,Disk* disk);
+
+void supprimeFileDisk(char* arg1,Disk* disk);
 #endif // PRIMITIVES_H
