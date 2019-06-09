@@ -14,6 +14,7 @@ int main(){
 	Inode courant;
 	Inode pere; 
 	courant= disk.listeDesInodes[0];
+	pere = courant; 
 
 	while(1){
 
@@ -51,10 +52,11 @@ int main(){
 				
 					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);	// todo ici le pére est déja perdu
 
-					changerRepertoire(arg1,&courant);
-					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
-					printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
-					printf("DEBUG : je suis : %s\n",courant.name);
+					changerRepertoire(arg1,&courant,&pere);
+					//printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
+					//printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
+					//printf("DEBUG : je suis : %s\n",courant.name);
+
 			}
 
 		}else if(strcmp(nameOrder,"rm") == 0){

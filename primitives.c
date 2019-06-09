@@ -107,15 +107,19 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 	
 }
 
-void changerRepertoire(char* arg1,Inode* courant)	// 				cd 
+void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd 
 {		
 	if(strcmp(arg1,"..")==0){
 		if(strcmp(arg1,"..")==0){
 			if(courant->previousInode != NULL){
-				printf("mon papoulle est : %s \n",courant->previousInode);
+				printf("mon papoulle est : %s \n",pere->name);
 				
 				if(courant->previousInode != NULL){
-					*courant = *(courant->previousInode);
+					*courant = *pere;
+					if(pere->previousInode != NULL)
+						*pere = *pere->previousInode;
+					
+
 				}
 			}
 			else
@@ -138,9 +142,18 @@ void changerRepertoire(char* arg1,Inode* courant)	// 				cd
 				printf("je retourne %s \n",ino.name);
 				printf("mon papa du retour %s  \n",ino.previousInode->name);
 				*/
-				Inode inoPere = *courant;
+				Inode tampon = *courant;
+
+				
 				*courant= courant->repertoryBloc->mesInodes[i];
-				courant->previousInode= &inoPere;
+				
+				courant->previousInode= pere;
+
+				if(pere->previousInode != NULL){
+					*pere = tampon;
+				}
+
+				
 				break;
 
 			}
