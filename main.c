@@ -61,7 +61,12 @@ int main(){
 
 		}else if(strcmp(nameOrder,"rm") == 0){
 			if(strcmp(arg1,"\0")){
-				supprime(&courant,arg1,&disk);
+				supprimeFichier(&courant,arg1,&disk);
+			}
+
+		}else if(strcmp(nameOrder,"rmdir") == 0){
+			if(strcmp(arg1,"\0")){
+				supprimeRepertoire(&courant,arg1,&disk);
 			}
 
 		}else if(strcmp(nameOrder,"ls") == 0){

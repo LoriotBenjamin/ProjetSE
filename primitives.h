@@ -14,11 +14,13 @@ void creerRepertoire(char* name);
 
 void createRepertory(Inode* inodeParent,Disk* disk, char* name);
 
-void changerRepertoire(char* arg1,Inode* courant);
+void changerRepertoire(char* arg1,Inode* courant, Inode* pere);
 
 void showCurrentRepository(Inode courant);
 
-void supprime (Inode* courant,char* arg1,Disk* disk);
+void supprimeFichier (Inode* courant,char* arg1,Disk* disk);
+
+void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk);
 
 void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer);
 #endif // PRIMITIVES_H

@@ -35,7 +35,7 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 
 }
 
-void supprime (Inode* courant,char* arg1,Disk* disk){
+void supprimeFichier (Inode* courant,char* arg1,Disk* disk){
 	
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
@@ -46,10 +46,15 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 				 // si on arrive au bout du tableau
 				if(courant->repertoryBloc->mesInodes[i+1].type == TYPE_FICHIER || courant->repertoryBloc->mesInodes[i+1].type == TYPE_REPERTOIRE )
 					courant->repertoryBloc->mesInodes[i]=courant->repertoryBloc->mesInodes[i+1];
-				
 			}
+		}
+	}
+	
+}
 
-		}else if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
+void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
+	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
+		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
 
 			if(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode == 0){// pas de fils
 				supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
@@ -66,7 +71,7 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 					Inode inodePourSupprimer;
 					for(int i=0;i<(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode);i++){ // suppresion des fils
 
-						supprime(&(courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[i]),inodePourSupprimer.name,disk);	// TODO PARTIE A TESTER!!
+						supprimeRepertoire(&(courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[i]),inodePourSupprimer.name,disk);	// TODO PARTIE A TESTER!!
 
 					}
 					courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
@@ -83,8 +88,6 @@ void supprime (Inode* courant,char* arg1,Disk* disk){
 	}
 	
 }
-
-
 
 void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 
