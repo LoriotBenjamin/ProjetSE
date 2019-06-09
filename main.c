@@ -83,8 +83,14 @@ int main(){
 				printf("DEBUG : Nombre d'inodes : %d\n",disk.nombreDinode);
 			}
 
-		}else
+		}else if(strcmp(nameOrder,"quitter") == 0){
+
+		    break;
+
+		}else{
 			printf("erreur il faut entrer un nom de fichier \n");
+
+		}
 
 		// traitement de la commande 
 	}
