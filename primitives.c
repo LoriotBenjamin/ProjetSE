@@ -53,37 +53,55 @@ void supprimeFichier (Inode* courant,char* arg1,Disk* disk){
 }
 
 void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
+	printf("nom de tout mes inodes \n");
+	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
+		printf("%s ",courant->repertoryBloc->mesInodes[i].name);
+	}
+	printf("\n");
+
+	printf(" je suis lancé et le courant est : %s \n",courant->name);
+	printf("je demande de supprimer: %s \n",arg1);
+
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
 
 			if(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode == 0){// pas de fils
+				printf("je passe la \n");
 				supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
-				courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
-				for(i;i<(courant->repertoryBloc->nbDeMesInode);i++){	// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
-					 // si on arrive au bout du tableau
-					if(courant->repertoryBloc->mesInodes[i+1].type == TYPE_FICHIER || courant->repertoryBloc->mesInodes[i+1].type == TYPE_REPERTOIRE )
-						courant->repertoryBloc->mesInodes[i]=courant->repertoryBloc->mesInodes[i+1];
-					
-				}
+
+		
 
 			}else{	// le repertoir a des fils 
 					//supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type); à voir 
-					Inode inodePourSupprimer;
-					for(int i=0;i<(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode);i++){ // suppresion des fils
+				
+					for(int j=0;j<(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode);j++){ // suppression des fils
+						printf(" nb inodes: %d\n",courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode);
+						printf("j=%d \n",j);
+						printf("i=%d \n",i);
 
-						supprimeRepertoire(&(courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[i]),inodePourSupprimer.name,disk);	// TODO PARTIE A TESTER!!
+						if(courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[j].type== TYPE_REPERTOIRE){
+							printf("je lance moi meme\n");
+							supprimeRepertoire(&(courant->repertoryBloc->mesInodes[i]),courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[j].name,disk);	// TODO PARTIE RECURSIF A TESTER!!
+							
+						}
+						else{
+							supprimeFichier(&(courant->repertoryBloc->mesInodes[i]),courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[j].name,disk);
+						}
 
-					}
-					courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
-					for(i;i<(courant->repertoryBloc->nbDeMesInode);i++){	// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
-					 // si on arrive au bout du tableau
-					if(courant->repertoryBloc->mesInodes[i+1].type == TYPE_FICHIER || courant->repertoryBloc->mesInodes[i+1].type == TYPE_REPERTOIRE )
-						courant->repertoryBloc->mesInodes[i]=courant->repertoryBloc->mesInodes[i+1];
 					
-				}
+					}// fin suppression des fils 
+					supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
+
+				
 
 			}	
-		}
+			
+
+		}// apres la suppresion demande
+
+
+		
+
 
 	}
 	
