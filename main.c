@@ -84,8 +84,9 @@ int main(){
 			}
 
 		}else if(strcmp(nameOrder,"quitter") == 0){
-
-		    break;
+            		printf("je vais quitter\n");
+            		save_disk(&disk);
+		    	break;
 
 		}else{
 			printf("erreur il faut entrer un nom de fichier \n");
