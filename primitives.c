@@ -215,3 +215,43 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 	ajoutInodeDisk(inode,disk);
 	ajoutInode(inode,inodeParent);
 }
+/* 
+void copyFile(Inode* inodeFichier,Disk* disk,char* dest)
+{
+	Inode inode;
+
+	int i =0;
+	char* dest_fin,dest_pred;
+	inode=*(inodeFichier);
+	dest_fin=strtok(dest,"/");
+    while (dest_fin!=NULL)
+    {
+			dest_pred=dest_fin;
+			dest_fin = strtok (dest, "/");
+    }	
+    for(i=0;i<=disk->nombreDinode;i++)
+    {
+		if(disk->listeDesInodes[i].nom==dest_fin && disk->listeDesInodes[i].previousInode->nom==dest_pred && disk->listeDesInodes[i].type==TYPE_REPERTOIRE)
+		{
+			inode.previousInode=disk->listeDesInodes[i];
+			ajoutInodeDisk(inode,disk);
+			ajoutInode(inode,listeDesInodes[i]);
+		}
+		else if(disk->listeDesInodes[i].nom==dest_fin && disk->listeDesInodes[i].previousInode->nom==dest_pred && disk->listeDesInodes[i].type==TYPE_FICHIER)
+		{
+			inode.previousInode=disk->listeDesInodes[i].previousInode;
+			supprimeFile(listeDesInodes[i].previousInode,dest_fin,disk);
+			ajoutInodeDisk(inode,disk);
+			ajoutInode(inode,listeDesInodes[i].previousInode);
+		}
+		else
+			printf("Destination non trouvée\n");
+	}
+	
+}
+void deplacerFile(Inode* inodeFichier,char* dest, Disk* disk)
+{
+	copyFile(inodeFichier,disk,dest);
+	supprimeFile(inodeFichier->name,disk);
+}
+*/
