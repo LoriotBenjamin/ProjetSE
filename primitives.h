@@ -28,7 +28,7 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer);
 
 void afficherAllInodes(Disk* disk);
 
-void decoupeCibleChemin (char* arg);
+Inode decoupeCibleChemin (char* arg,Disk* disk);
 
 Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk);
 #endif // PRIMITIVES_H

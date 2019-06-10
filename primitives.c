@@ -159,26 +159,47 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 
 }
 
-void decoupeCibleChemin (char* arg){
+Inode decoupeCibleChemin (char* arg,Disk* disk){
 	char* tab[200];// si tout les inodes sont mit bout à bout sachant qu'on ne peut qu'en avoir 200
 	char* cs =NULL;
+	int i=0;
 	int nombreDeSeparateur = 0;
 	for(int i=0;i<strlen(arg);i++){
 		if(arg[i] == 47)//  code ASCII du /
 			nombreDeSeparateur++;
 	}	
-	for(int i=0;i<nombreDeSeparateur;i++){
-		tab[i]=strtok(arg,"/");
-	}
+
+	char string[500] ;// commande de 500 caracteres max
+	strcpy(string,arg);
+  	char *p;
+ 	 printf ("String  \"%s\" is split into tokens:\n",string);
+ 	 p = strtok (string,"/");
+	  while (p!= NULL)
+	  {
+	  	tab[i]= p;
+	    i++;
+	    printf ("%s\n",p);
+	    p = strtok (NULL, "/");
+
+	   
+	  }
+
+	
 	printf("il y a %d \n",nombreDeSeparateur);
+	printf("je send: %s \n",tab[nombreDeSeparateur]);
+	printf(" et %s \n",tab[nombreDeSeparateur-1]);
+
+	return chercheCibleChemin(tab[nombreDeSeparateur],tab[nombreDeSeparateur-1],disk);
 	// ce qui nous interesse c'est seulement la cible et son parent pour être certain de l'identifier
 
 
 }
 Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk){
-	
+	printf("je cherche un inode du nom de : %s \n",name);
+	printf("avec comme pere : %s \n",nameOfParent);
 	for(int i=0;i<(disk->nombreDinode);i++){
-		//if(strcmp(name,disk->listeDesInodes[i].name) )
+		if(strcmp(name,disk->listeDesInodes[i].name)==0 && strcmp(nameOfParent,disk->listeDesInodes[i].previousInode->name) ==0)
+			return disk->listeDesInodes[i];
 
 	}
 

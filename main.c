@@ -43,6 +43,8 @@ int main(){
 		printf("arg2: %s\n", arg2 );
 
 	
+		Inode test = decoupeCibleChemin (arg1,&disk);
+		printf("nom du fichier cible: %s \n",test.name);
 
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
@@ -52,14 +54,14 @@ int main(){
 
 		}else if(strcmp(nameOrder,"cd") == 0){
 			if(strcmp(arg1,"\0")){
-				
-					printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);	// todo ici le pére est déja perdu
+
+					
 
 					changerRepertoire(arg1,&courant,&pere);
 					//printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
 					//printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
 					//printf("DEBUG : je suis : %s\n",courant.name);
-
+					//printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);	
 			}
 
 		}else if(strcmp(nameOrder,"rm") == 0){
