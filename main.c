@@ -38,13 +38,13 @@ int main(){
 
 		sscanf(buffer, "%s%c%s%c%s", nameOrder, &separator, arg1, &separator, arg2);
 
-		printf("Name order : %s\n", nameOrder);
-		printf("arg1: %s\n", arg1 );
-		printf("arg2: %s\n", arg2 );
+		//printf("Name order : %s\n", nameOrder);
+		//printf("arg1: %s\n", arg1 );
+		//printf("arg2: %s\n", arg2 );
 
 	
-		Inode test = decoupeCibleChemin (arg1,&disk);
-		printf("nom du fichier cible: %s \n",test.name);
+		//Inode test = decoupeCibleChemin (arg1,&disk);
+		//printf("nom du fichier cible: %s \n",test.name);
 
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
@@ -76,6 +76,11 @@ int main(){
 
 		}else if(strcmp(nameOrder,"ls") == 0){
 			afficherRepertoire(&courant,&disk);
+		
+
+		}else if(strcmp(nameOrder,"echo") == 0){
+			if(strcmp(arg1,"\0"))
+				afficheArg(arg1,arg2);
 		
 
 		}else if(strcmp(nameOrder,"pwd") == 0){

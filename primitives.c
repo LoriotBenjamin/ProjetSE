@@ -37,7 +37,7 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 
 }
 
-void supprimeFichier (Inode* courant,char* arg1,Disk* disk){
+void supprimeFichier (Inode* courant,char* arg1,Disk* disk){	// rm
 	
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
@@ -66,7 +66,7 @@ void supprimeFichier2 (Inode* courant,char* arg1,Disk* disk){	// besoin pour la 
 	
 }
 // pour le débug 
-void afficherAllInodes(Disk* disk){
+void afficherAllInodes(Disk* disk){	// pour debug
 
 	printf(" liste des inodes: ");
 	for(int i=0;i<(disk->nombreDinode);i++)
@@ -75,8 +75,15 @@ void afficherAllInodes(Disk* disk){
 	
 
 }
+void afficheArg(char* arg1,char* arg2){	// echo
+	if(strcmp(arg1,"\0") && strcmp(arg2,"\0"))
+		printf("%s %s \n",arg1,arg2);
+	else 
+		printf("%s \n",arg1);
+	
+}
 
-void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
+void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){	// rmdir
 	printf("nom de tout mes inodes \n");
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		printf("%s ",courant->repertoryBloc->mesInodes[i].name);
@@ -137,7 +144,7 @@ void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
 	}
 }
 
-void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
+void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){	// RMDIR
 
 	for(int i=0;i<(disk->nombreDinode);i++){
 		if(strcmp(arg1,disk->listeDesInodes[i].name)==0 && typeAEffacer ==disk->listeDesInodes[i].type ){
@@ -194,7 +201,8 @@ Inode decoupeCibleChemin (char* arg,Disk* disk){
 
 
 }
-Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk){
+
+Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk){	// Pour les futurs chemins 
 	printf("je cherche un inode du nom de : %s \n",name);
 	printf("avec comme pere : %s \n",nameOfParent);
 	for(int i=0;i<(disk->nombreDinode);i++){
@@ -254,7 +262,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 
 		
 }
-void showCurrentRepository(Inode courant){
+void showCurrentRepository(Inode courant){	// PWD
 	printf("%s \n",courant.name);
 }
 void afficherRepertoire(Inode* courant,Disk* disk) // 				ls

@@ -31,4 +31,6 @@ void afficherAllInodes(Disk* disk);
 Inode decoupeCibleChemin (char* arg,Disk* disk);
 
 Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk);
+
+void afficheArg(char* arg1,char* arg2);
 #endif // PRIMITIVES_H
