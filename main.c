@@ -8,6 +8,7 @@
 
 
 int main(){
+
 	Disk disk;
 	initialize_disk(&disk);
 	load_disk(&disk);
@@ -41,8 +42,7 @@ int main(){
 		printf("arg1: %s\n", arg1 );
 		printf("arg2: %s\n", arg2 );
 
-		chercheCibleChemin(arg1);
-
+	
 
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){

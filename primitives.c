@@ -53,7 +53,18 @@ void supprimeFichier (Inode* courant,char* arg1,Disk* disk){
 	}
 	
 }
-
+void supprimeFichier2 (Inode* courant,char* arg1,Disk* disk){	// besoin pour la récursivité
+	
+	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
+		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
+			supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
+			
+	
+			
+		}
+	}
+	
+}
 // pour le débug 
 void afficherAllInodes(Disk* disk){
 
@@ -71,18 +82,20 @@ void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
 		printf("%s ",courant->repertoryBloc->mesInodes[i].name);
 	}
 	printf("\n");
+	int tamp = 0;
 
 	printf(" je suis lancé et le courant est : %s \n",courant->name);
 	printf("je demande de supprimer: %s \n",arg1);
 
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
+			tamp = i;
 
 			if(courant->repertoryBloc->mesInodes[i].repertoryBloc->nbDeMesInode == 0){// pas de fils
 				printf("je passe la \n");
 				supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
-
-		
+				courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
+			
 
 			}else{	// le repertoir a des fils 
 					//supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type); à voir 
@@ -98,7 +111,7 @@ void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
 							
 						}
 						else{
-							supprimeFichier(&(courant->repertoryBloc->mesInodes[i]),courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[j].name,disk);
+							supprimeFichier2(&(courant->repertoryBloc->mesInodes[i]),courant->repertoryBloc->mesInodes[i].repertoryBloc->mesInodes[j].name,disk);
 						}
 
 					
@@ -112,12 +125,16 @@ void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk){
 
 		}// apres la suppresion demande
 
-
 		
 
-
 	}
+	courant->repertoryBloc->nbDeMesInode = courant->repertoryBloc->nbDeMesInode-1;
+	for(int i=tamp;i<(courant->repertoryBloc->nbDeMesInode);i++){// faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
+	 // si on arrive au bout du tableau
+		if(courant->repertoryBloc->mesInodes[i+1].type == TYPE_FICHIER || courant->repertoryBloc->mesInodes[i+1].type == TYPE_REPERTOIRE )
+			courant->repertoryBloc->mesInodes[i]=courant->repertoryBloc->mesInodes[i+1];
 	
+	}
 }
 
 void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
@@ -142,7 +159,7 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){
 
 }
 
-void chercheCibleChemin (char* arg){
+void decoupeCibleChemin (char* arg){
 	char* tab[200];// si tout les inodes sont mit bout à bout sachant qu'on ne peut qu'en avoir 200
 	char* cs =NULL;
 	int nombreDeSeparateur = 0;
@@ -154,6 +171,17 @@ void chercheCibleChemin (char* arg){
 		tab[i]=strtok(arg,"/");
 	}
 	printf("il y a %d \n",nombreDeSeparateur);
+	// ce qui nous interesse c'est seulement la cible et son parent pour être certain de l'identifier
+
+
+}
+Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk){
+	
+	for(int i=0;i<(disk->nombreDinode);i++){
+		//if(strcmp(name,disk->listeDesInodes[i].name) )
+
+	}
+
 }
 
 void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd 
