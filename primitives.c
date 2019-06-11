@@ -378,7 +378,7 @@ void afficherRepertoire(char* arg1, Inode* courant,Disk* disk) // 				ls
     	}
 	else if (strcmp(arg1,"-t")==0)
     	{
-        	for(int i=(courant->repertoryBloc->nbDeMesInode);i>(courant->repertoryBloc->nbDeMesInode);i--)
+        	for(int i=(courant->repertoryBloc->nbDeMesInode)-1;i>0;i--)
         	{
             		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
                 		printf ("%d\033[34;01m%s\033[00m  \n",i,courant->repertoryBloc->mesInodes[i].name);
