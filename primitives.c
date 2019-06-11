@@ -217,7 +217,7 @@ void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer){	// RMDIR
 }
 
 Inode decoupeCibleChemin (char* arg,Disk* disk){
-	char* tab[200];// si tout les inodes sont mit bout à bout sachant qu'on ne peut qu'en avoir 200
+	char* tab[200];
 	char* cs =NULL;
 	int i=0;
 	int nombreDeSeparateur = 0;
@@ -240,14 +240,7 @@ Inode decoupeCibleChemin (char* arg,Disk* disk){
 
 	   
 	  }
-
-	
-	printf("il y a %d \n",nombreDeSeparateur);
-	printf("je send: %s \n",tab[nombreDeSeparateur]);
-	printf(" et %s \n",tab[nombreDeSeparateur-1]);
-
-	return chercheCibleChemin(tab[nombreDeSeparateur],tab[nombreDeSeparateur-1],disk);
-	// ce qui nous interesse c'est seulement la cible et son parent pour être certain de l'identifier
+	return chercheCibleChemin(tab[nombreDeSeparateur-1],tab[nombreDeSeparateur-2],disk);
 
 
 }
@@ -256,13 +249,16 @@ Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk){	// Pour les
 	printf("je cherche un inode du nom de : %s \n",name);
 	printf("avec comme pere : %s \n",nameOfParent);
 	for(int i=0;i<(disk->nombreDinode);i++){
+		printf(" 1 : %s  2: %s 3: %s 4:%s",name,disk->listeDesInodes[i].name,nameOfParent,disk->listeDesInodes[i].previousInode->name); // le "disk->listeDesInodes[i].previousInode->name" ( 4: ...) renvoie le mauvais nom 
 		if(strcmp(name,disk->listeDesInodes[i].name)==0 && strcmp(nameOfParent,disk->listeDesInodes[i].previousInode->name) ==0)
+		{
+			printf(" loltes1 : %s",disk->listeDesInodes[i].name);
 			return disk->listeDesInodes[i];
 
+		}
 	}
 
 }
-
 void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd 
 {
 	if(strcmp(arg1,"..")==0){
@@ -444,43 +440,29 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 	ajoutInodeDisk(inode,disk);
 	ajoutInode(inode,inodeParent);
 }
-/* 
-void copyFile(Inode* inodeFichier,Disk* disk,char* dest)
+void copyFile(Inode fichier,char* dest,Disk* disk)
 {
-	Inode inode;
-
-	int i =0;
-	char* dest_fin,dest_pred;
-	inode=*(inodeFichier);
-	dest_fin=strtok(dest,"/");
-    while (dest_fin!=NULL)
-    {
-			dest_pred=dest_fin;
-			dest_fin = strtok (dest, "/");
-    }	
-    for(i=0;i<=disk->nombreDinode;i++)
-    {
-		if(disk->listeDesInodes[i].nom==dest_fin && disk->listeDesInodes[i].previousInode->nom==dest_pred && disk->listeDesInodes[i].type==TYPE_REPERTOIRE)
-		{
-			inode.previousInode=disk->listeDesInodes[i];
-			ajoutInodeDisk(inode,disk);
-			ajoutInode(inode,listeDesInodes[i]);
-		}bb 
-		else if(disk->listeDesInodes[i].nom==dest_fin && disk->listeDesInodes[i].previousInode->nom==dest_pred && disk->listeDesInodes[i].type==TYPE_FICHIER)
-		{
-			inode.previousInode=disk->listeDesInodes[i].previousInode;
-			supprimeFile(listeDesInodes[i].previousInode,dest_fin,disk);
-			ajoutInodeDisk(inode,disk);
-			ajoutInode(inode,listeDesInodes[i].previousInode);
-		}
-		else
-			printf("Destination non trouvée\n");
-	}
+	Inode inode,inodeParent;
+	inode=fichier;
+	inodeParent=decoupeCibleChemin(dest,disk);
 	
+	if(inodeParent.type==TYPE_REPERTOIRE)
+	{
+		inode.previousInode=&inodeParent;
+		ajoutInodeDisk(inode,disk);
+		ajoutInode(inode,&inodeParent);
+	}
+	else
+	{
+		inode.previousInode=inodeParent.previousInode;
+		supprimeFichier(inodeParent.previousInode,inodeParent.name,disk);
+		ajoutInodeDisk(inode,disk);
+		ajoutInode(inode,inode.previousInode);
+	}
 }
-void deplacerFile(Inode* inodeFichier,char* dest, Disk* disk)
+
+void deplacerFile(Inode inodeFichier,char* dest,Disk* disk)
 {
-	copyFile(inodeFichier,disk,dest);
-	supprimeFile(inodeFichier->name,disk);
+	copyFile(inodeFichier,dest,disk);
+	supprimeFichier(inodeFichier.previousInode,inodeFichier.name,disk);
 }
-*/

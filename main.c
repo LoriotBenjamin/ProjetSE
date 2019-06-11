@@ -109,6 +109,13 @@ int main(){
             //save_disk(&disk);
 		    return 0;
 
+		}else if(strcmp(nameOrder,"cp") == 0){
+			
+			copyFile(chercheCibleChemin(arg1,courant.name,&disk),arg2,&disk);
+		}
+		}else if(strcmp(nameOrder,"mv") == 0){
+			
+			deplacerFile(chercheCibleChemin(arg1,courant.name,&disk),arg2,&disk);
 		}else{
 			printf("%s : command not found\n", nameOrder);
 

@@ -37,5 +37,9 @@ Inode decoupeCibleChemin (char* arg,Disk* disk);
 
 Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk);
 
+void copyFile(Inode fichier,char* dest,Disk* disk);
+
+void deplacerFile(Inode inodeFichier,char* dest,Disk* disk);
+
 void afficheArg(char* arg1,char* arg2);
 #endif // PRIMITIVES_H
