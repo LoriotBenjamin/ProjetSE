@@ -85,7 +85,7 @@ void ajoutInode(Inode inode,Inode* inodeParent){
     printf("le nom de mon pere a peut etre change: %s \n",inode.previousInode->name);
     inodeParent->repertoryBloc->nbDeMesInode+=1;
   }else{
-    printf("plus d'espace disque");
+    printf("plus d'espace dans ce répertoire");
   }
   
 }
@@ -103,7 +103,7 @@ Inode *get_inode(int inodenum, Disk *disk)
 
   Inode *current = disk->inodesList.first;
   for (int i = 0; i < inodenum; i++){
-    current = current->nextInode;
+    current = current->nextInode ;
 	}
 
   return current;

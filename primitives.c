@@ -26,7 +26,7 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 	
 	if(inodeParent->type == TYPE_REPERTOIRE){
 		//Pas trop compris la suite, j'sais pas si c'est bon :o
-		DataBloc* dataBloc = malloc(sizeof(DataBloc));
+		DataBloc* dataBloc = malloc(30*sizeof(DataBloc));
 		inode.dataBloc = dataBloc; 
 	
 		inode.previousInode = inodeParent;
@@ -35,6 +35,66 @@ void createFile(Inode* inodeParent,Disk* disk, char* name) {// 				touch
 
 	ajoutInode(inode,inodeParent);
 
+}
+// pour le débug 
+void afficherAllInodes(Disk* disk){	// pour debug
+
+	printf(" liste des inodes: ");
+	for(int i=0;i<(disk->nombreDinode);i++)
+		printf(" %s  ",disk->listeDesInodes[i].name);
+	printf("\n");
+	
+
+}
+void afficherDataFichier(Inode* courant, char* nomDufichier,Disk* disk){ // cat 
+		
+			int i=0;
+			int j=0;
+			if(getInodeByName(nomDufichier,disk)!= NULL){
+				Inode* inodeAEcrire = getInodeByName(nomDufichier,disk);
+
+				for(j=0;j<30;j++){
+					for(i=0;i< sizeof(inodeAEcrire->dataBloc[j].data);i++){
+						printf("%c",inodeAEcrire->dataBloc[j].data[i]);
+					}
+					printf("bloc %d \n",j);
+				}
+
+				printf("valeur de j à la fin de la boucle: %d",j);
+				printf("\n");
+			}
+			else{
+				printf("le fichier n'existe pas dans ce repertoire \n");
+			}
+
+}
+// pour débug
+void ecrireDansFichier(char* nomDufichier,char* aEcrire,Disk* disk){
+			printf("inode mal recupere: \n");
+			Inode* inodeAEcrire = getInodeByName(nomDufichier,disk);
+			printf("inode bien recupere: %s \n",inodeAEcrire->name);
+
+			if(strlen(aEcrire)<1024)
+				strcpy(inodeAEcrire->dataBloc[0].data,aEcrire);
+
+			int i=0;
+			for(i=0;i< sizeof(inodeAEcrire->dataBloc[1].data);i++){
+				printf(" %c",inodeAEcrire->dataBloc[1].data[i]);
+			}
+			printf("valeur de i à la fin de la boucle: %d",i);
+			printf("\n");
+}
+
+
+Inode* getInodeByName(char* nomInode,Disk* disk){
+	printf("je veu l'inode du nom de : %s \n",nomInode);
+	for(int i=0;i<(disk->nombreDinode);i++){
+		if(strcmp(nomInode,disk->listeDesInodes[i].name)==0 ){
+			printf("inode trouve son nom est : %s \n",disk->listeDesInodes[i].name);
+			return &(disk->listeDesInodes[i]);
+		}
+	}
+	return NULL;	
 }
 
 void supprimeFichier (Inode* courant,char* arg1,Disk* disk){	// rm
@@ -58,23 +118,13 @@ void supprimeFichier2 (Inode* courant,char* arg1,Disk* disk){	// besoin pour la 
 	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
 		if(courant->repertoryBloc->mesInodes[i].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
 			supprimeFileDisk(arg1,disk,courant->repertoryBloc->mesInodes[i].type);
-			
-	
-			
+		
 		}
 	}
 	
 }
-// pour le débug 
-void afficherAllInodes(Disk* disk){	// pour debug
 
-	printf(" liste des inodes: ");
-	for(int i=0;i<(disk->nombreDinode);i++)
-		printf(" %s  ",disk->listeDesInodes[i].name);
-	printf("\n");
-	
 
-}
 void afficheArg(char* arg1,char* arg2){	// echo
 	if(strcmp(arg1,"\0") && strcmp(arg2,"\0"))
 		printf("%s %s \n",arg1,arg2);
@@ -271,7 +321,7 @@ void afficherRepertoire(Inode* courant,Disk* disk) // 				ls
 		printf(" je suis : %s \n",courant->name);
 		printf(" j'ai  : %d inodes \n",courant->repertoryBloc->nbDeMesInode);
 		for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
-			 
+
 			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE)
 				printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
 			else
@@ -294,8 +344,8 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 	//init_permissions(&inode);
 	if(inodeParent->type == TYPE_REPERTOIRE){
 		//Pas trop compris la suite, j'sais pas si c'est bon :o
-		DataBloc* dataBloc = malloc(sizeof(DataBloc));
-		inode.dataBloc = dataBloc; 
+		//DataBloc* dataBloc = malloc(sizeof(DataBloc));
+		//inode.dataBloc = dataBloc; 
 		inode.previousInode = inodeParent;
 		printf("le nom de mon pére est33 : %s \n",inodeParent->name);
 		printf("j'ia enregistre: %s \n",inode.previousInode->name);
@@ -329,7 +379,7 @@ void copyFile(Inode* inodeFichier,Disk* disk,char* dest)
 			inode.previousInode=disk->listeDesInodes[i];
 			ajoutInodeDisk(inode,disk);
 			ajoutInode(inode,listeDesInodes[i]);
-		}
+		}bb 
 		else if(disk->listeDesInodes[i].nom==dest_fin && disk->listeDesInodes[i].previousInode->nom==dest_pred && disk->listeDesInodes[i].type==TYPE_FICHIER)
 		{
 			inode.previousInode=disk->listeDesInodes[i].previousInode;

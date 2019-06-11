@@ -20,7 +20,7 @@ void init_permissions(Inode* inode);
 
 //void ajoutInode(Disk *disk);
 
-Inode *get_inode(int inodenum, Disk *disk);
+//Inode *get_inode(int inodenum, Disk *disk);
 
 void ajoutInode(Inode inode,Inode*	 inodeParent);
 

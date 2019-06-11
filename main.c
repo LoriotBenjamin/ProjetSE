@@ -17,6 +17,7 @@ int main(){
 	Inode pere; 
 	courant= disk.listeDesInodes[0];
 	pere = courant; 
+	char test [200];
 
 	while(1){
 
@@ -46,6 +47,8 @@ int main(){
 		//Inode test = decoupeCibleChemin (arg1,&disk);
 		//printf("nom du fichier cible: %s \n",test.name);
 
+
+
 		if(strcmp(nameOrder,"touch") == 0){
 			if(strcmp(arg1,"\0")){
 				createFile(&courant,&disk,arg1);
@@ -74,8 +77,17 @@ int main(){
 				supprimeRepertoire(&courant,arg1,&disk);
 			}
 
+		}else if(strcmp(nameOrder,"ecrit") == 0){
+			ecrireDansFichier(arg1,arg2,&disk);
+		
+
 		}else if(strcmp(nameOrder,"ls") == 0){
 			afficherRepertoire(&courant,&disk);
+		
+
+		}else if(strcmp(nameOrder,"cat") == 0){
+			if(strcmp(arg1,"\0"))
+				afficherDataFichier(&courant,arg1,&disk);
 		
 
 		}else if(strcmp(nameOrder,"echo") == 0){

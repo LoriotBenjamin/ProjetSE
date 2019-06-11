@@ -7,6 +7,11 @@
 void createFile(Inode* inodeParent,Disk* disk, char* name);
 
 //void afficherRepertoire(RepertoryBloc* repertory);
+void ecrireDansFichier(char* nomDufichier,char* aEcrire,Disk* disk);
+
+void afficherDataFichier(Inode* courant, char* nomDufichier,Disk* disk);
+
+Inode* getInodeByName(char* nomInode,Disk* disk);
 
 void afficherRepertoire(Inode* courant,Disk* disk);
 
