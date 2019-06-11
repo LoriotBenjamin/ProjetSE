@@ -82,7 +82,7 @@ int main(){
 		
 
 		}else if(strcmp(nameOrder,"ls") == 0){
-			afficherRepertoire(&courant,&disk);
+			afficherRepertoire(arg1,&courant,&disk);
 		
 
 		}else if(strcmp(nameOrder,"cat") == 0){
