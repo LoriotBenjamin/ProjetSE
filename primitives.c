@@ -315,19 +315,98 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 void showCurrentRepository(Inode courant){	// PWD
 	printf("%s \n",courant.name);
 }
-void afficherRepertoire(Inode* courant,Disk* disk) // 				ls
-{		
-		
-		printf(" je suis : %s \n",courant->name);
-		printf(" j'ai  : %d inodes \n",courant->repertoryBloc->nbDeMesInode);
-		for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++){
-
-			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE)
-				printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
-			else
-				printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
-		}
-		printf("\n");
+void afficherRepertoire(char* arg1, Inode* courant,Disk* disk) // 				ls
+	printf(" je suis : %s \n",courant->name);
+	printf(" j'ai  : %d inodes \n",courant->repertoryBloc->nbDeMesInode);
+	if(strcmp(arg1,"-C")==0)
+   	{
+       		for(int i;i<(courant->repertoryBloc->nbDeMesInode);i++)
+       		{
+            		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf ("\033[34;01m%s\033[00m  \n",courant->repertoryBloc->mesInodes[i].name);
+            		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf("%s  \n",courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+   	else if (strcmp(arg1,"-F")==0)
+   	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+            		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf ("\033[34;01m%s\033[00m/  ",courant->repertoryBloc->mesInodes[i].name);
+           		/*else if (courant->repertoryBloc->mesInodes[i].type==TYPE_EXECUTABLE)
+                		printf("%s*  ",courant->repertoryBloc->mesInodes[i].name);*/
+            		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                	printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+    	else if (strcmp(arg1,"-R")==0)
+    	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+        		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+            		{
+                		printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
+                		for(int j=0;j<(courant->repertoryBloc->nbDeMesInode);j++)
+                		{
+                    			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                        			printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
+                    			else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                        			printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
+                		}
+            		}
+            		else
+                		printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+    	else if (strcmp(arg1,"-d")==0)
+    	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+            		printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+    	else if (strcmp(arg1,"-i")==0)
+    	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+            		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf ("%d\033[34;01m%s\033[00m  \n",i,courant->repertoryBloc->mesInodes[i].name);
+            		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf("%d%s  \n",i,courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+	else if (strcmp(arg1,"-t")==0)
+    	{
+        	for(int i=(courant->repertoryBloc->nbDeMesInode);i>(courant->repertoryBloc->nbDeMesInode);i--)
+        	{
+            		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf ("%d\033[34;01m%s\033[00m  \n",i,courant->repertoryBloc->mesInodes[i].name);
+            		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf("%d%s  \n",i,courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+	else if (strcmp(arg1,"-a")==0)
+	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+        	  	if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+        		        printf ("\033[34;01m%s\033[00m  \n",i,courant->repertoryBloc->mesInodes[i].name);
+            		else
+                		printf("%s  \n",i,courant->repertoryBloc->mesInodes[i].name);
+        	}
+	}
+    	else
+    	{
+        	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
+        	{
+        		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
+        	       		printf ("\033[34;01m%s\033[00m  \n",courant->repertoryBloc->mesInodes[i].name);
+            		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
+                		printf("%s  \n",courant->repertoryBloc->mesInodes[i].name);
+        	}
+    	}
+	printf("\n");
 
 }
 
