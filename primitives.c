@@ -269,7 +269,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 				
 				if(strcmp(courant->name,"/")!=0){
 					*courant = *pere ;
-					courant->previousInode=pere;
+					courant->previousInode= pere;
 					
 
 					if(strcmp(courant->name,"/")!=0){
@@ -304,8 +304,8 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 				courant->previousInode= pere ;
 
 				//printf("parent aprés assignation %s \n",courant->previousInode->name);
-				printf("le grand pere de courant est  :%s",courant->previousInode->previousInode->name);
-				
+				printf("le grand pere de courant est par le courant  :%s",courant->previousInode->previousInode->name);
+				printf("le grand pere de courant est par le pere  :%s",pere->previousInode->name);
 
 				
 				break;
@@ -444,24 +444,18 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 		//DataBloc* dataBloc = malloc(sizeof(DataBloc));
 		//inode.dataBloc = dataBloc; 
 		inode.previousInode = inodeParent;
-<<<<<<< HEAD
+
 		//printf("le nom de mon pére est33 : %s \n",inodeParent->name);
 		//printf("j'ia enregistre: %s \n",inode.previousInode->name);
-=======
-		printf("le nom de mon pére est33 : %s \n",inodeParent->name);
-		printf("j'ia enregistre: %s \n",inode.previousInode->name);
->>>>>>> 27820cf102f9f9e4fc50be525b61b506916a8271
+
 		inode.repertoryBloc= malloc(sizeof(RepertoryBloc));
   		inode.repertoryBloc->nbDeMesInode=0;
 
 	}
-<<<<<<< HEAD
+
 	//printf("le nom de mon pére est33 : %s \n",inodeParent->name);
 		//printf("j'ia enregistre: %s \n",inode.previousInode->name);
-=======
-	printf("le nom de mon pére est33 : %s \n",inodeParent->name);
-		printf("j'ia enregistre: %s \n",inode.previousInode->name);
->>>>>>> 27820cf102f9f9e4fc50be525b61b506916a8271
+
 	ajoutInodeDisk(inode,disk);
 	ajoutInode(inode,inodeParent);
 }
