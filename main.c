@@ -17,6 +17,7 @@ int main(){
 	Inode pere; 
 	courant= disk.listeDesInodes[0];
 	pere = courant; 
+
 	//char test [200];
 
 	while(1){
@@ -64,6 +65,7 @@ int main(){
 					changerRepertoire(arg1,&courant,&pere);
 					printf("parent de courant aprés sortie de la fonction %s \n",courant.previousInode->name);
 					printf("pére aprés sortie de la fonction %s \n",pere.name);
+
 					//printf("DEBUG : mon papa name : %s\n",courant.previousInode->name);
 					//printf("DEBUG : mon premier frere de mes freres : %s\n",courant.previousInode->repertoryBloc->mesInodes[0].name);
 					//printf("DEBUG : je suis : %s\n",courant.name);
@@ -114,8 +116,8 @@ int main(){
 
 		}else if(strcmp(nameOrder,"cp") == 0){
 			
-			copyFile(chercheCibleChemin(arg1,courant.name,&disk),arg2,&disk);
-		
+			copyFile(chercheCibleChemin(arg1,courant.name,&disk),arg2,&disk);	
+
 		}else if(strcmp(nameOrder,"mv") == 0){
 			
 			deplacerFile(chercheCibleChemin(arg1,courant.name,&disk),arg2,&disk);

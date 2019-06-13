@@ -277,6 +277,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 						printf("nom du courant aprés assignation du pere %s \n",courant->name);
 						pere = courant->previousInode;
 					}
+
 					
 
 				}
@@ -291,6 +292,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 			if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && strcmp(arg1,courant->repertoryBloc->mesInodes[i].name)==0){
 				
 				
+
 				if(strcmp(courant->name,"/")!=0){
 					*pere = *courant;
 					//printf(" nom du courant juste apres son assgination %s ",courant->name);
@@ -311,6 +313,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 			}
 			
 			//printf("DEBUG : mon papa name : %s\n",courant->previousInode->name);
+
 		}
 		
 	}
@@ -318,12 +321,7 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 
 		
 }
-/*
-void getInodePourChangerPere(Inode* courant){
 
-	return courant
-
-}*/
 void showCurrentRepository(Inode courant){	// PWD
 	printf("%s \n",courant.name);
 }
@@ -446,14 +444,24 @@ void createRepertory(Inode* inodeParent,Disk* disk, char* name) {// 				mkdir
 		//DataBloc* dataBloc = malloc(sizeof(DataBloc));
 		//inode.dataBloc = dataBloc; 
 		inode.previousInode = inodeParent;
+<<<<<<< HEAD
 		//printf("le nom de mon pére est33 : %s \n",inodeParent->name);
 		//printf("j'ia enregistre: %s \n",inode.previousInode->name);
+=======
+		printf("le nom de mon pére est33 : %s \n",inodeParent->name);
+		printf("j'ia enregistre: %s \n",inode.previousInode->name);
+>>>>>>> 27820cf102f9f9e4fc50be525b61b506916a8271
 		inode.repertoryBloc= malloc(sizeof(RepertoryBloc));
   		inode.repertoryBloc->nbDeMesInode=0;
 
 	}
+<<<<<<< HEAD
 	//printf("le nom de mon pére est33 : %s \n",inodeParent->name);
 		//printf("j'ia enregistre: %s \n",inode.previousInode->name);
+=======
+	printf("le nom de mon pére est33 : %s \n",inodeParent->name);
+		printf("j'ia enregistre: %s \n",inode.previousInode->name);
+>>>>>>> 27820cf102f9f9e4fc50be525b61b506916a8271
 	ajoutInodeDisk(inode,disk);
 	ajoutInode(inode,inodeParent);
 }
