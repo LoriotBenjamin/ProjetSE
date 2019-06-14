@@ -42,4 +42,6 @@ void copyFile(Inode fichier,char* dest,Disk* disk);
 void deplacerFile(Inode inodeFichier,char* dest,Disk* disk);
 
 void afficheArg(char* arg1,char* arg2);
+
+void compterMots(Inode* courant,char* arg1);
 #endif // PRIMITIVES_H

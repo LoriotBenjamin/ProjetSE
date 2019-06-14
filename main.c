@@ -104,6 +104,11 @@ int main(){
 			showCurrentRepository(courant);
 		
 
+		}else if(strcmp(nameOrder,"wc") == 0){
+			if(strcmp(arg1,"\0"))
+				compterMots(&courant,arg1);
+		
+
 		}else if(strcmp(nameOrder,"mkdir") == 0){
 			if(strcmp(arg1,"\0")){
 				createRepertory(&courant,&disk,arg1);
@@ -130,5 +135,9 @@ int main(){
 
 		afficherAllInodes(&disk);
 	}// fin du shell
+
+	free(courant.repertoryBloc);
+	free(pere.repertoryBloc);
+
 	return 0; 
 }

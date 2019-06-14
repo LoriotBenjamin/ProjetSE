@@ -84,6 +84,31 @@ void ecrireDansFichier(char* nomDufichier,char* aEcrire,Disk* disk){
 			printf("valeur de i à la fin de la boucle: %d",i);
 			printf("\n");
 }
+void compterMots(Inode* courant,char* arg1){
+	int compteur = 0;
+
+for(int k=0;k<(courant->repertoryBloc->nbDeMesInode);k++){
+
+		if(courant->repertoryBloc->mesInodes[k].type==TYPE_FICHIER && strcmp(arg1,courant->repertoryBloc->mesInodes[k].name)==0){
+			printf("ça bug ici? %d \n",k);
+			for(int j=0;j<30;j++){
+							//printf("ou  ici? %d \n",k);
+							//printf("ou  la? %d \n",k);
+							for(int i=0;i< 1024;i++){
+								
+								if(courant->repertoryBloc->mesInodes[k].dataBloc[j].data[i] != 0){
+									compteur++;
+									printf(" %c  ",courant->repertoryBloc->mesInodes[k].dataBloc[j].data[i]);
+								}
+							}
+							printf("bloc %d \n",j);
+						}
+		}
+
+
+	}
+		printf("il y a : %d caracteres",compteur);
+}
 
 
 Inode* getInodeByName(char* nomInode,Disk* disk){
@@ -294,14 +319,14 @@ void changerRepertoire(char* arg1,Inode* courant,Inode * pere)	// 				cd
 				
 
 				if(strcmp(courant->name,"/")!=0){
-					*pere = *courant;
+					//*pere = *courant;
 					//printf(" nom du courant juste apres son assgination %s ",courant->name);
 				}
 
 				
 				*courant = courant->repertoryBloc->mesInodes[i];
 				
-				courant->previousInode= pere ;
+				//courant->previousInode= pere ;
 
 				//printf("parent aprés assignation %s \n",courant->previousInode->name);
 				printf("le grand pere de courant est par le courant  :%s",courant->previousInode->previousInode->name);
@@ -334,9 +359,9 @@ void afficherRepertoire(char* arg1, Inode* courant,Disk* disk) // 				ls
        		for(int i;i<(courant->repertoryBloc->nbDeMesInode);i++)
        		{
             		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
-                		printf ("\033[34;01m%s\033[00m  \n",courant->repertoryBloc->mesInodes[i].name);
+                		printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
             		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
-                		printf("%s  \n",courant->repertoryBloc->mesInodes[i].name);
+                		printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
         	}
     	}
    	else if (strcmp(arg1,"-F")==0)
@@ -383,13 +408,13 @@ void afficherRepertoire(char* arg1, Inode* courant,Disk* disk) // 				ls
         	{
             		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
 			{
-				printf ("%d",i);
-                		printf ("%d\033[34;01m%s\033[00m  \n",i,courant->repertoryBloc->mesInodes[i].name);
+				printf ("%d ",i);
+                		printf ("%d\033[34;01m%s\033[00m  ",i,courant->repertoryBloc->mesInodes[i].name);
 			}
             		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
 			{
-				printf ("%d",i);
-                		printf("%d%s  \n",i,courant->repertoryBloc->mesInodes[i].name);
+				printf ("%d ",i);
+                		printf("%d%s  ",i,courant->repertoryBloc->mesInodes[i].name);
 			}
         	}
     	}
@@ -419,9 +444,9 @@ void afficherRepertoire(char* arg1, Inode* courant,Disk* disk) // 				ls
         	for(int i=0;i<(courant->repertoryBloc->nbDeMesInode);i++)
         	{
         		if(courant->repertoryBloc->mesInodes[i].type==TYPE_REPERTOIRE && courant->repertoryBloc->mesInodes[i].name[0] !='.')
-        	       		printf ("\033[34;01m%s\033[00m  \n",courant->repertoryBloc->mesInodes[i].name);
+        	       		printf ("\033[34;01m%s\033[00m  ",courant->repertoryBloc->mesInodes[i].name);
             		else if (courant->repertoryBloc->mesInodes[i].name[0] !='.')
-                		printf("%s  \n",courant->repertoryBloc->mesInodes[i].name);
+                		printf("%s  ",courant->repertoryBloc->mesInodes[i].name);
         	}
     	}
 	printf("\n");
