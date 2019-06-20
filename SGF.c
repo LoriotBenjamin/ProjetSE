@@ -2,58 +2,59 @@
 #include <stdlib.h>
 #include "SGF.h"
 
-// ***** disk functions *****
+/***************************
+Fonctions liées au disque
+***************************/
 
-void initialize_disk(Disk* disk){	
+void initialise_disque(Disque* disque) {	
+  Inode new ;
 
-	disk->nombreDinode=0;
+  new.inodePost = NULL;
+  new.type = TYPE_REPERTOIRE;
+  new.inodePre = NULL;
+  new.blocRepertoire = malloc(sizeof(BlocRepertoire));
+  new.blocRepertoire->nbInodes = 0;
+  strcpy(new.nom, "/"); // racine 
 
-  //////////////////////////////
-	Inode new ;
-
-  new.nextInode = NULL;
-  new.type=TYPE_REPERTOIRE;
-  new.previousInode = NULL;
-  new.repertoryBloc= malloc(sizeof(RepertoryBloc));
-  new.repertoryBloc->nbDeMesInode=0;
-  strcpy(new.name,"/"); //racine 
-  
   //PERMISSIONS a faire ici
 
+  disque->nbInodes = 0;
+
   //ajout dans la liste:
-  disk->listeDesInodes[disk->nombreDinode] = new;
-  
+  disque->listeInodes[disque->nbInodes] = new;
+
   //mise a jour du nombre d'éléments
-  disk->nombreDinode += 1;
+  disque->nbInodes += 1;
 
-
-	printf("Success of the disk initialization\n");
+  printf("Success of the disque initialization\n");
 }
 
-void save_disk(Disk* disk){ 
-    FILE* file = fopen("disk", "wb");
-	if (file != NULL){
-		fwrite(&disk, sizeof(disk), 10000, file);  
+void save_disque(Disque* disque) { 
+  FILE* file = fopen("disque", "wb");
+
+	if (file != NULL) {
+		fwrite(&disque, sizeof(disque), 10000, file);  
 		fclose(file);
-	}
-	else {
-		printf("Disk error\n");
+	} else {
+		printf("Disque error\n");
 	}	
 } 
 
-void load_disk(Disk* disk){	
-	FILE* file = fopen("disk", "rb");
-	if (file != NULL){
-		fread(&disk, sizeof(disk), 10000, file);
-		printf("Success of the disk load\n");
+void recuperer_disque(Disque* disque) {	
+	FILE* file = fopen("disque", "rb");
+
+	if (file != NULL) {
+		fread(&disque, sizeof(disque), 10000, file);
+		printf("Success of the disque load\n");
 		fclose(file);
-	}
-	else {
-		printf("Disk error\n");
+	}	else {
+		printf("Disque error\n");
 	}	
 }  
 
-// ***** inode functions *****
+/***************************
+Fonctions liées aux inodes
+***************************/
 
 void init_permissions(Inode* inode) {
   /*
@@ -66,71 +67,65 @@ void init_permissions(Inode* inode) {
 		nbUsers++;
 	}*/
 }
-void ajoutInodeDisk(Inode inode,Disk* disk){
 
-
-  if(disk->nombreDinode < 200){
-    disk->listeDesInodes[disk->nombreDinode] = inode; 
-    disk->nombreDinode+=1;
-  }else{
+void ajoutInodeDisque(Inode inode, Disque* disque) {
+  if(disque->nbInodes < 200) {
+    disque->listeInodes[disque->nbInodes] = inode; 
+    disque->nbInodes += 1;
+  } else {
     printf("plus d'espace disque");
   }
-  
 }
-void ajoutInode(Inode inode,Inode* inodeParent){
 
-
-  if(inodeParent->repertoryBloc->nbDeMesInode < 30){
-    inodeParent->repertoryBloc->mesInodes[inodeParent->repertoryBloc->nbDeMesInode] = inode; 
-   // printf("le nom de mon pere a peut etre change: %s \n",inode.previousInode->name);
-    inodeParent->repertoryBloc->nbDeMesInode+=1;
-  }else{
+void ajoutInode(Inode inode, Inode* inodeParent) {
+  if(inodeParent->blocRepertoire->nbInodes < 30) {
+    inodeParent->blocRepertoire->listeInodes[inodeParent->blocRepertoire->nbInodes] = inode; 
+    // printf("le nom de mon pere a peut etre change: %s \n", inode.inodePre->nom);
+    inodeParent->blocRepertoire->nbInodes += 1;
+  } else {
     printf("plus d'espace dans ce répertoire");
   }
-  
 }
+
 /*
-Inode *get_inode(int inodenum, Disk *disk)
-{//renvoie le maillon à l'indice précisé, si c'est possible
-  if (inodenum == 0)
-    return disk->inodesList.first;
-  if (inodenum > disk->inodesList.nb)
-  {
-    printf("System error trying to access inode %d: only %d inodes in disk\n"
-           , inodenum, disk->inodesList.nb);
+Inode *get_inode(int inodenum, Disque *disque) {//renvoie le maillon à l'indice précisé, si c'est possible
+  if(inodenum == 0) { 
+    return disque->inodesList.first;
+  }
+
+  if(inodenum > disque->inodesList.nb) {
+    printf("System error trying to access inode %d: only %d inodes in disque\n", inodenum, disque->inodesList.nb);
     return NULL;   
   }
 
-  Inode *current = disk->inodesList.first;
-  for (int i = 0; i < inodenum; i++){
-    current = current->nextInode ;
+  Inode *current = disque->inodesList.first;
+  for(int i = 0; i < inodenum; i++) {
+    current = current->inodePost ;
 	}
-
   return current;
 }
 
-void ajoutInode(Disk *disk)
-{//ajoute une inode libre dans le disque
-
+void ajoutInode(Disque *disque) {//ajoute une inode libre dans le disque
   //initialisation:
   Inode *new = malloc(sizeof(Inode));
-  Inode *last =  disk->inodesList.first;
-  new->nextInode = NULL;
+  Inode *last =  disque->inodesList.first;
+  new->inodePost = NULL;
   new->type=0;
   
   //PERMISSIONS a faire ici
 
   //ajout dans la liste:
-  if (disk->inodesList.first == NULL)
-  {
-    disk->inodesList.first = new;
-    disk->inodesList.nb = 1;
+  if(disque->inodesList.first == NULL) {
+    disque->inodesList.first = new;
+    disque->inodesList.nb = 1;
     return;
   }
-  while (last->nextInode != NULL)
-    last = last->nextInode;
-  last->nextInode = new;
+ 
+  while (last->inodePost != NULL) { 
+    last = last->inodePost;
+  } 
+  last->inodePost = new;
   
   //mise a jour du nombre d'éléments
-  disk->inodesList.nb += 1;
+  disque->inodesList.nb += 1;
 }*/

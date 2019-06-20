@@ -6,25 +6,29 @@
 #include "constantes.h"
 #include <string.h>
 
-// ***** disk functions *****
+/***************************
+Fonctions liées au disque
+***************************/
 
-void save_disk(Disk* disk); 
+void sauver_disque(Disque* disque); 
 
-void load_disk(Disk* disk);
+void recuperer_disque(Disque* disque);
 
-void initialize_disk(Disk* disk);
+void initialise_disque(Disque* disque);
 
-// ***** inode functions *****
+
+/***************************
+Fonctions liées aux inodes
+***************************/
 
 void init_permissions(Inode* inode);
 
-//void ajoutInode(Disk *disk);
+//void ajoutInode(Disque *disque);
 
-//Inode *get_inode(int inodenum, Disk *disk);
+//Inode *get_inode(int inodenum, Disque *disque);
 
-void ajoutInode(Inode inode,Inode*	 inodeParent);
+void ajoutInode(Inode inode, Inode*	inodeParent);
 
-void ajoutInodeDisk(Inode inode,Disk* disk);
-
+void ajoutInodeDisque(Inode inode, Disque* disque);
 
 #endif // SGF_H

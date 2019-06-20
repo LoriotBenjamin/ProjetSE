@@ -4,41 +4,55 @@
 #include <stdio.h>
 #include "constantes.h"
 
-//typedef struct InodeList InodeList;
-typedef struct Disk Disk;
+/***************************
+Déclaration
+***************************/
+
+// Structure Inode
 typedef struct Inode Inode;
-typedef struct RepertoryBloc RepertoryBloc;
-typedef struct DataBloc DataBloc;
+
+// Structure Disque
+typedef struct Disque Disque;
+
+// Structure BlocRepertoire
+typedef struct BlocRepertoire BlocRepertoire;
+
+// Structure BlocDonnees
+typedef struct BlocDonnees BlocDonnees;
 
 
+/***************************
+Définition
+***************************/
 
-struct Inode {
-	char name[NAME_SIZE];
-	char permissions[PERMISSION_SIZE];
-	int type; // 1 = texte, 2 = binaire , ...
-	int blockUsed[30]; // quels sont les blocs utilisés (max 30 ici)
+// Structure Inode
+struct Inode { 
+	char nom[NOM_TAILLE];
+	char permissions[PERMISSION_TAILLE];
+	int type; // 0 = fichier, 1 = répertoire
+	int blocUtilise[30]; // 30 blocs utilisés max
 	int test;
-	RepertoryBloc* repertoryBloc;
-	DataBloc* dataBloc;  
-	Inode* previousInode;
-	Inode* nextInode;
+	BlocRepertoire* blocRepertoire;
+	BlocDonnees* blocDonnees;  
+	Inode* inodePre;
+	Inode* inodePost;
 };
 
-
-struct Disk {
-	//Inode* inodes; // 15 inodes
-	Inode listeDesInodes[200]; // 200 inodes max 
-
-	int nombreDinode;
+// Structure Disque
+struct Disque {
+	Inode listeInodes[200]; // 200 inodes max sur le disque
+	int nbInodes;
 };
 
-struct RepertoryBloc {
-	 Inode mesInodes[20];	// 20 inodes max par dossier 
-	 int nbDeMesInode ;
+// Structure BlocRepertoire
+struct BlocRepertoire {
+	 Inode listeInodes[20];	// 20 inodes max par dossier 
+	 int nbInodes ;
 };
 
-struct DataBloc {
-	char data[DATA_BLOC_SIZE];
+// Structure BlocDonnees
+struct BlocDonnees {
+	char donnees[BLOC_DONNEES_TAILLE];
 };
 
 #endif // STRUCTURE_H

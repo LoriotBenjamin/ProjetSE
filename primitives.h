@@ -4,44 +4,44 @@
 #include <stdio.h>
 #include "structure.h"
 
-void createFile(Inode* inodeParent,Disk* disk, char* name);
+void creerFichier(Inode* inodeParent, Disque* disque, char* nom);
 
-//void afficherRepertoire(RepertoryBloc* repertory);
-void ecrireDansFichier(char* nomDufichier,char* aEcrire,Disk* disk);
+//void afficherRepertoire(BlocRepertoire* repertory);
 
-void afficherDataFichier(Inode* courant, char* nomDufichier,Disk* disk);
+void ecrireDansFichier(char* nomDufichier, char* aEcrire, Disque* disque);
 
-Inode* getInodeByName(char* nomInode,Disk* disk);
+void afficherDataFichier(Inode* courant, char* nomDufichier, Disque* disque);
 
-void afficherRepertoire(char* arg1, Inode* courant,Disk* disk);
+Inode* getInodeParNom(char* nomInode, Disque* disque);
 
-void creerRepertoire(char* name);
+void afficherRepertoire(char* arg1, Inode* courant, Disque* disque);
 
-void createRepertory(Inode* inodeParent,Disk* disk, char* name);
+void creerRepertoire(Inode* inodeParent, Disque* disque, char* nom);
 
-void changerRepertoire(char* arg1,Inode* courant, Inode* pere);
+void changerRepertoire(char* arg1, Inode* courant, Inode* pere);
 
-void showCurrentRepository(Inode courant);
+void donnerRepertoireCourant(Inode courant);
 
-void supprimeFichier (Inode* courant,char* arg1,Disk* disk);
+void supprimerFichier(Inode* courant, char* arg1, Disque* disque);
 
-void supprimeFichier2 (Inode* courant,char* arg1,Disk* disk);
+void supprimerFichier2(Inode* courant, char* arg1, Disque* disque);
 
-void supprimeRepertoire (Inode* courant,char* arg1,Disk* disk);
+void supprimerRepertoire(Inode* courant, char* arg1, Disque* disque);
 
-void supprimeFileDisk(char* arg1,Disk* disk,int typeAEffacer);
+void supprimerFichierDisque(char* arg1, Disque* disque, int typeAEffacer);
 
-void afficherAllInodes(Disk* disk);
+void afficherInodes(Disque* disque);
 
-Inode decoupeCibleChemin (char* arg,Disk* disk);
+Inode decouperCibleChemin(char* arg, Disque* disque);
 
-Inode chercheCibleChemin(char* name,char * nameOfParent,Disk* disk);
+Inode chercherCibleChemin(char* nom, char * nomParent, Disque* disque);
 
-void copyFile(Inode fichier,char* dest,Disk* disk);
+void copierFichier(Inode fichier,char* dest, Disque* disque);
 
-void deplacerFile(Inode inodeFichier,char* dest,Disk* disk);
+void deplacerFichier(Inode inodeFichier, char* dest, Disque* disque);
 
-void afficheArg(char* arg1,char* arg2);
+void afficherArg(char* arg1, char* arg2);
 
-void compterMots(Inode* courant,char* arg1);
+void compterMots(Inode* courant, char* arg1);
+
 #endif // PRIMITIVES_H
