@@ -84,7 +84,7 @@ void supprimerFichierDisque(char* arg1, Disque* disque, int typeAEffacer) {
 
 // rmdir : supprime un répertoire
 void supprimerRepertoire(Inode* courant, char* arg1, Disque* disque){	
-	int tamp = 0;
+	int tamp = 0, supp = 0;
 
 	for(int i=0; i<(courant->blocRepertoire->nbInodes); i++) {
 		if(courant->blocRepertoire->listeInodes[i].type == TYPE_REPERTOIRE && strcmp(arg1, courant->blocRepertoire->listeInodes[i].nom) == 0) {
@@ -102,17 +102,19 @@ void supprimerRepertoire(Inode* courant, char* arg1, Disque* disque){
 					}
 				} 
 				supprimerFichierDisque(arg1,disque,courant->blocRepertoire->listeInodes[i].type);
-			}	
+			}
+			supp++;	
 		}	
 	}
 
-	courant->blocRepertoire->nbInodes = courant->blocRepertoire->nbInodes-1;
-	for(int i=tamp; i<(courant->blocRepertoire->nbInodes); i++) { // faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
-	 	// si on arrive au bout du tableau
-		if(courant->blocRepertoire->listeInodes[i+1].type == TYPE_FICHIER || courant->blocRepertoire->listeInodes[i+1].type == TYPE_REPERTOIRE) {
-			courant->blocRepertoire->listeInodes[i] = courant->blocRepertoire->listeInodes[i+1];
-		}	
-	}
+	if(supp > 0) { 
+		for(int i=tamp; i<(courant->blocRepertoire->nbInodes); i++) { // faut réorganiser le tableau on repart d'ou on etait et on prend les n+1 pour les decaler
+			// si on arrive au bout du tableau
+			if(courant->blocRepertoire->listeInodes[i+1].type == TYPE_FICHIER || courant->blocRepertoire->listeInodes[i+1].type == TYPE_REPERTOIRE) {
+				courant->blocRepertoire->listeInodes[i] = courant->blocRepertoire->listeInodes[i+1];
+			}	
+		}
+	}	
 }
 
 // ls : affiche le contenu du répertoire
@@ -193,15 +195,14 @@ void afficherDataFichier(Inode* courant, char* nomDufichier, Disque* disque) {
 	if(getInodeParNom(nomDufichier, disque)!= NULL) {
 		Inode* inodeAEcrire = getInodeParNom(nomDufichier, disque);
 
-		for(j=0; j<NB_BLOCS_UTILISES; j++){
-			for(i=0; i< sizeof(inodeAEcrire->blocDonnees[j].donnees); i++) {
-				printf("%c", inodeAEcrire->blocDonnees[j].donnees[i]);
+		if(inodeAEcrire->type == TYPE_FICHIER) { 
+			for(j=0; j<NB_BLOCS_UTILISES; j++){
+				for(i=0; i< sizeof(inodeAEcrire->blocDonnees[j].donnees); i++) {
+					printf("%c", inodeAEcrire->blocDonnees[j].donnees[i]);
+				}
+				printf("bloc %d \n", j);
 			}
-			printf("bloc %d \n", j);
-		}
-
-		printf("valeur de j à la fin de la boucle: %d", j);
-		printf("\n");
+		}	
 	}
 	else{
 		printf("le fichier n'existe pas dans ce repertoire \n");
@@ -210,10 +211,10 @@ void afficherDataFichier(Inode* courant, char* nomDufichier, Disque* disque) {
 
 // echo : affiche les arguments
 void afficherArg(char* arg1, char* arg2) {	
-	if(strcmp(arg1,"\0") && strcmp(arg2,"\0")) { 
-		printf("%s %s \n",arg1,arg2);
+	if(strcmp(arg1, "\0") && strcmp(arg2, "\0")) { 
+		printf("%s %s \n", arg1, arg2);
 	} else {  
-		printf("%s \n",arg1);
+		printf("%s \n", arg1);
 	}	
 }
 
@@ -228,7 +229,6 @@ void compterMots(Inode* courant, char* arg1) {
 
 	for(i=0; i<(courant->blocRepertoire->nbInodes); i++) {
 		if(courant->blocRepertoire->listeInodes[i].type == TYPE_FICHIER && strcmp(arg1, courant->blocRepertoire->listeInodes[i].nom) == 0) {
-			printf("ça bug ici? %d \n", i);
 			for(j=0; j<NB_BLOCS_UTILISES; j++){
 				for(k=0; k<BLOC_DONNEES_TAILLE; k++) {
 					if(courant->blocRepertoire->listeInodes[i].blocDonnees[j].donnees[k] != 0) {
@@ -238,23 +238,24 @@ void compterMots(Inode* courant, char* arg1) {
 			}
 		}
 	}
-	printf("il y a : %d caracteres", compteur);
+	printf("%d caracteres\n", compteur);
 }
 
 // permet d'écrire dans un fichier
 void ecrireDansFichier(char* nomDufichier, char* aEcrire, Disque* disque) {
 	int i;
 	Inode* inodeAEcrire = getInodeParNom(nomDufichier, disque);
+	
+	if(inodeAEcrire->type == TYPE_FICHIER) { 
+		if(strlen(aEcrire) < BLOC_DONNEES_TAILLE){ 
+			strcpy(inodeAEcrire->blocDonnees[0].donnees, aEcrire);
+		}	
 
-	if(strlen(aEcrire) < BLOC_DONNEES_TAILLE){ 
-		strcpy(inodeAEcrire->blocDonnees[0].donnees, aEcrire);
+		for(i=0; i< sizeof(inodeAEcrire->blocDonnees[1].donnees); i++) {
+			printf(" %c", inodeAEcrire->blocDonnees[1].donnees[i]);
+		}
+		printf("\nvaleur de i à la fin de la boucle: %d\n", i);
 	}	
-
-	for(i=0; i< sizeof(inodeAEcrire->blocDonnees[1].donnees); i++) {
-		printf(" %c", inodeAEcrire->blocDonnees[1].donnees[i]);
-	}
-	printf("valeur de i à la fin de la boucle: %d", i);
-	printf("\n");
 }
 
 // cd : change le répertoire courant

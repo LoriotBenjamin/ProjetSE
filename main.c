@@ -90,7 +90,7 @@ int main() {
             return 0;
             
 		} else {
-			printf("%s : command not found\n", nomCommande);
+			printf("%s : command inconnue\n", nomCommande);
 		}
 	} // fin du shell
 
