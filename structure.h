@@ -30,7 +30,7 @@ struct Inode {
 	char nom[NOM_TAILLE];
 	char permissions[PERMISSION_TAILLE];
 	int type; // 0 = fichier, 1 = répertoire
-	int blocUtilise[30]; // 30 blocs utilisés max
+	int blocUtilise[NB_BLOCS_UTILISES]; // 30 blocs utilisés max
 	int test;
 	BlocRepertoire* blocRepertoire;
 	BlocDonnees* blocDonnees;  
@@ -40,13 +40,13 @@ struct Inode {
 
 // Structure Disque
 struct Disque {
-	Inode listeInodes[200]; // 200 inodes max sur le disque
+	Inode listeInodes[MAX_INODES_DISQUE]; // 200 inodes max sur le disque
 	int nbInodes;
 };
 
 // Structure BlocRepertoire
 struct BlocRepertoire {
-	 Inode listeInodes[20];	// 20 inodes max par dossier 
+	 Inode listeInodes[MAX_INODES_REP];	// 20 inodes max par dossier 
 	 int nbInodes ;
 };
 

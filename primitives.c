@@ -23,7 +23,7 @@ void creerFichier(Inode* inodeParent, Disque* disque, char* nom) {
 	//init_permissions(&inode);
 	
 	if(inodeParent->type == TYPE_REPERTOIRE) {
-		BlocDonnees* blocDonnees = malloc(30 * sizeof(BlocDonnees));
+		BlocDonnees* blocDonnees = malloc(NB_BLOCS_UTILISES * sizeof(BlocDonnees));
 		inode.blocDonnees = blocDonnees; 
 		inode.inodePre = inodeParent;
 	}
@@ -48,7 +48,7 @@ void afficherDataFichier(Inode* courant, char* nomDufichier, Disque* disque) {
 	if(getInodeParNom(nomDufichier, disque)!= NULL) {
 		Inode* inodeAEcrire = getInodeParNom(nomDufichier, disque);
 
-		for(j=0; j<30; j++){
+		for(j=0; j<NB_BLOCS_UTILISES; j++){
 			for(i=0; i< sizeof(inodeAEcrire->blocDonnees[j].donnees); i++) {
 				printf("%c", inodeAEcrire->blocDonnees[j].donnees[i]);
 			}
@@ -71,7 +71,7 @@ void ecrireDansFichier(char* nomDufichier, char* aEcrire, Disque* disque) {
 	Inode* inodeAEcrire = getInodeParNom(nomDufichier, disque);
 	printf("inode bien recupere: %s \n", inodeAEcrire->nom);
 
-	if(strlen(aEcrire) < 1024){ 
+	if(strlen(aEcrire) < BLOC_DONNEES_TAILLE){ 
 		strcpy(inodeAEcrire->blocDonnees[0].donnees, aEcrire);
 	}	
 
@@ -88,10 +88,10 @@ void compterMots(Inode* courant, char* arg1) {
 	for(i=0; i<(courant->blocRepertoire->nbInodes); i++) {
 		if(courant->blocRepertoire->listeInodes[i].type == TYPE_FICHIER && strcmp(arg1, courant->blocRepertoire->listeInodes[i].nom) == 0) {
 			printf("ça bug ici? %d \n", i);
-			for(j=0; j<30; j++){
+			for(j=0; j<NB_BLOCS_UTILISES; j++){
 				//printf("ou  ici? %d \n", i);
 				//printf("ou  la? %d \n", i);
-				for(k=0; k< 1024; k++) {
+				for(k=0; k<BLOC_DONNEES_TAILLE; k++) {
 					if(courant->blocRepertoire->listeInodes[i].blocDonnees[j].donnees[k] != 0) {
 						compteur++;
 						printf(" %c  ", courant->blocRepertoire->listeInodes[i].blocDonnees[j].donnees[k]);
@@ -213,7 +213,7 @@ void supprimerFichier2(Inode* courant, char* arg1, Disque* disque) {	// besoin p
 }
 
 Inode decouperCibleChemin (char* arg, Disque* disque) {  
-	char* tab[200];
+	char* tab[MAX_INODES_DISQUE];
 	char* cs = NULL;
 	int i = 0;
 	int nombreDeSeparateur = 0;

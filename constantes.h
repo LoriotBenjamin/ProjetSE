@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+// taile saisie
+#define TAILLE_SAISIE 40
+
 // taille du nom de l'inode
 #define NOM_TAILLE 30
 
@@ -12,7 +15,16 @@
 // taille d'un bloc de données
 #define BLOC_DONNEES_TAILLE 1024
 
-// numéro de type pour un fihcier
+// nombre blocs utilisés
+#define NB_BLOCS_UTILISES 30
+
+// nombre maximum d'inodes sur le disque
+#define MAX_INODES_DISQUE 200
+
+// nombre maximum d'inodes par répertoire
+#define MAX_INODES_REP 20
+
+// numéro de type pour un fichier
 #define TYPE_FICHIER 0
 
 // numéro de type pour un répertoire

@@ -69,7 +69,7 @@ void init_permissions(Inode* inode) {
 }
 
 void ajoutInodeDisque(Inode inode, Disque* disque) {
-  if(disque->nbInodes < 200) {
+  if(disque->nbInodes < MAX_INODES_DISQUE) {
     disque->listeInodes[disque->nbInodes] = inode; 
     disque->nbInodes += 1;
   } else {
@@ -78,7 +78,7 @@ void ajoutInodeDisque(Inode inode, Disque* disque) {
 }
 
 void ajoutInode(Inode inode, Inode* inodeParent) {
-  if(inodeParent->blocRepertoire->nbInodes < 30) {
+  if(inodeParent->blocRepertoire->nbInodes < MAX_INODES_REP) {
     inodeParent->blocRepertoire->listeInodes[inodeParent->blocRepertoire->nbInodes] = inode; 
     // printf("le nom de mon pere a peut etre change: %s \n", inode.inodePre->nom);
     inodeParent->blocRepertoire->nbInodes += 1;

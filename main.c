@@ -19,9 +19,9 @@ int main() {
 
 	// boucle tant qu'on ne saisi pas "exit"	
 	while(1) {
-		char nomCommande[40] = "\0";
-		char arg1[40] = "\0";
-		char arg2[40] = "\0";		
+		char nomCommande[TAILLE_SAISIE] = "\0";
+		char arg1[TAILLE_SAISIE] = "\0";
+		char arg2[TAILLE_SAISIE] = "\0";		
 		char buffer[100];
 		char separateur;
 
