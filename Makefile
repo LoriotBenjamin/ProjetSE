@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -W -Wall
+CFLAGS =
 EXEC = main
 OBJS = main.o SGF.o primitives.o
  

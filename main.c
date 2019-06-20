@@ -17,6 +17,8 @@ int main() {
 	courant = disque.listeInodes[0];
 	pere = courant; 
 
+	printf("\n");
+
 	// boucle tant qu'on ne saisi pas "exit"	
 	while(1) {
 		char nomCommande[TAILLE_SAISIE] = "\0";
@@ -25,34 +27,21 @@ int main() {
 		char buffer[100];
 		char separateur;
 
-		printf("user@%s ", courant.nom);
+		printf("\033[32;01muser@monShell\033[00m:\033[34;01m%s\033[00m ", courant.nom);
 		fgets(buffer, 100, stdin);
 		sscanf(buffer, "%s%c%s%c%s", nomCommande, &separateur, arg1, &separateur, arg2);
-	
-		//Inode test = decouperCibleChemin (arg1,&disque);
-		//printf("nom du fichier cible: %s \n",test.nom);
 
 		if(strcmp(nomCommande, "touch") == 0) {
 			if(strcmp(arg1, "\0")) {
 				creerFichier(&courant, &disque, arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n", disque.nbInodes);
 			}
-		} else if(strcmp(nomCommande, "cd") == 0) {
+		} else if(strcmp(nomCommande, "mkdir") == 0) {
 			if(strcmp(arg1, "\0")) {
-					printf("pére avant sortie de la fonction %s \n", pere.nom);
-					printf("parent avant entrée de la fonction %s \n", courant.inodePre->nom);
-				
-					changerRepertoire(arg1, &courant, &pere);
-					printf("parent de courant aprés sortie de la fonction %s \n", courant.inodePre->nom);
-					printf("pére aprés sortie de la fonction %s \n", pere.nom);
-
-					//printf("DEBUG : mon papa nom : %s\n",courant.inodePre->nom);
-					//printf("DEBUG : mon premier frere de mes freres : %s\n",courant.inodePre->blocRepertoire->listeInodes[0].nom);
-					//printf("DEBUG : je suis : %s\n",courant.nom);
-					//printf("DEBUG : mon papa nom : %s\n",courant.inodePre->nom);	
+				creerRepertoire(&courant, &disque, arg1);
 			}
+			
 		} else if(strcmp(nomCommande, "rm") == 0) {
-			if(strcmp(arg1, "\0")){
+			if(strcmp(arg1, "\0")) {
 				supprimerFichier(&courant, arg1, &disque);
 			}
 			
@@ -60,9 +49,6 @@ int main() {
 			if(strcmp(arg1, "\0")) {
 				supprimerRepertoire(&courant, arg1, &disque);
 			}
-			
-		} else if(strcmp(nomCommande, "ecrit") == 0) {
-			ecrireDansFichier(arg1, arg2, &disque);
 			
 		} else if(strcmp(nomCommande, "ls") == 0) {
 			afficherRepertoire(arg1, &courant, &disque);
@@ -78,35 +64,34 @@ int main() {
 			}
 			
 		} else if(strcmp(nomCommande, "pwd") == 0) {
-			donnerRepertoireCourant(courant);
+			afficherRepertoireCourant(courant);
 			
 		} else if(strcmp(nomCommande, "wc") == 0) {
 			if(strcmp(arg1, "\0")) {
 				compterMots(&courant, arg1);
 			}
 			
-		} else if(strcmp(nomCommande, "mkdir") == 0) {
-			if(strcmp(arg1, "\0")) {
-				creerRepertoire(&courant, &disque, arg1);
-				printf("DEBUG : Nombre d'inodes : %d\n", disque.nbInodes);
-			}
+		} else if(strcmp(nomCommande, "ecrit") == 0) {
+			ecrireDansFichier(arg1, arg2, &disque);
 			
-		} else if(strcmp(nomCommande, "exit") == 0) {
-            //sauver_disque(&disque);  // ne fonctionne pas
-            return 0;
-            
+		} else if(strcmp(nomCommande, "cd") == 0) {
+			if(strcmp(arg1, "\0")) {
+				changerRepertoire(arg1, &courant, &pere);
+			}
 		} else if(strcmp(nomCommande, "cp") == 0) {
 			copierFichier(chercherCibleChemin(arg1, courant.nom, &disque), arg2, &disque);	
 
 		} else if(strcmp(nomCommande, "mv") == 0) {
 			deplacerFichier(chercherCibleChemin(arg1, courant.nom, &disque), arg2, &disque);
 			
+		} else if(strcmp(nomCommande, "exit") == 0) {
+            //sauver_disque(&disque);  // ne fonctionne pas
+			printf("\n");
+            return 0;
+            
 		} else {
 			printf("%s : command not found\n", nomCommande);
 		}
-
-		afficherInodes(&disque);
-
 	} // fin du shell
 
 	free(courant.blocRepertoire);

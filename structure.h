@@ -31,7 +31,6 @@ struct Inode {
 	char permissions[PERMISSION_TAILLE];
 	int type; // 0 = fichier, 1 = répertoire
 	int blocUtilise[NB_BLOCS_UTILISES]; // 30 blocs utilisés max
-	int test;
 	BlocRepertoire* blocRepertoire;
 	BlocDonnees* blocDonnees;  
 	Inode* inodePre;

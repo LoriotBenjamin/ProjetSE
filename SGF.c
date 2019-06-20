@@ -6,30 +6,8 @@
 Fonctions liées au disque
 ***************************/
 
-void initialise_disque(Disque* disque) {	
-  Inode new ;
-
-  new.inodePost = NULL;
-  new.type = TYPE_REPERTOIRE;
-  new.inodePre = NULL;
-  new.blocRepertoire = malloc(sizeof(BlocRepertoire));
-  new.blocRepertoire->nbInodes = 0;
-  strcpy(new.nom, "/"); // racine 
-
-  //PERMISSIONS a faire ici
-
-  disque->nbInodes = 0;
-
-  //ajout dans la liste:
-  disque->listeInodes[disque->nbInodes] = new;
-
-  //mise a jour du nombre d'éléments
-  disque->nbInodes += 1;
-
-  printf("Success of the disque initialization\n");
-}
-
-void save_disque(Disque* disque) { 
+// sauvegarde le disque
+void sauver_disque(Disque* disque) { 
   FILE* file = fopen("disque", "wb");
 
 	if (file != NULL) {
@@ -40,22 +18,50 @@ void save_disque(Disque* disque) {
 	}	
 } 
 
+// initialise le disque
+void initialise_disque(Disque* disque) {	
+  Inode new ;
+
+  new.inodePost = NULL;
+  new.type = TYPE_REPERTOIRE;
+  new.inodePre = NULL;
+  new.blocRepertoire = malloc(sizeof(BlocRepertoire));
+  new.blocRepertoire->nbInodes = 0;
+  strcpy(new.nom, "/"); // racine 
+
+  disque->nbInodes = 0;
+
+  //ajout dans la liste:
+  disque->listeInodes[disque->nbInodes] = new;
+
+  //mise a jour du nombre d'éléments
+  disque->nbInodes += 1;
+}
+
+// télécharge le disque
 void recuperer_disque(Disque* disque) {	
 	FILE* file = fopen("disque", "rb");
 
 	if (file != NULL) {
 		fread(&disque, sizeof(disque), 10000, file);
-		printf("Success of the disque load\n");
 		fclose(file);
-	}	else {
-		printf("Disque error\n");
+	}
+} 
+
+// affiche les inodes contenus dans le disque
+void afficherInodes(Disque* disque) {	
+	printf(" liste des inodes: ");
+	for(int i=0; i<(disque->nbInodes); i++) { 
+		printf(" %s  ", disque->listeInodes[i].nom);
 	}	
-}  
+	printf("\n");
+}
 
 /***************************
 Fonctions liées aux inodes
 ***************************/
 
+// initilise les permissions
 void init_permissions(Inode* inode) {
   /*
 	char mode[3] = {'r', 'w', 'x'};
@@ -68,6 +74,17 @@ void init_permissions(Inode* inode) {
 	}*/
 }
 
+// récupère un inode grâce à son nom
+Inode* getInodeParNom(char* nomInode, Disque* disque){
+	for(int i=0; i<(disque->nbInodes); i++) {
+		if(strcmp(nomInode, disque->listeInodes[i].nom) == 0 ){
+			return &(disque->listeInodes[i]);
+		}
+	}
+	return NULL;	
+}
+
+// ajoute un inode
 void ajoutInodeDisque(Inode inode, Disque* disque) {
   if(disque->nbInodes < MAX_INODES_DISQUE) {
     disque->listeInodes[disque->nbInodes] = inode; 
@@ -77,55 +94,51 @@ void ajoutInodeDisque(Inode inode, Disque* disque) {
   }
 }
 
+// ajoute un inode au disque
 void ajoutInode(Inode inode, Inode* inodeParent) {
   if(inodeParent->blocRepertoire->nbInodes < MAX_INODES_REP) {
     inodeParent->blocRepertoire->listeInodes[inodeParent->blocRepertoire->nbInodes] = inode; 
-    // printf("le nom de mon pere a peut etre change: %s \n", inode.inodePre->nom);
     inodeParent->blocRepertoire->nbInodes += 1;
   } else {
     printf("plus d'espace dans ce répertoire");
   }
 }
 
-/*
-Inode *get_inode(int inodenum, Disque *disque) {//renvoie le maillon à l'indice précisé, si c'est possible
-  if(inodenum == 0) { 
-    return disque->inodesList.first;
-  }
 
-  if(inodenum > disque->inodesList.nb) {
-    printf("System error trying to access inode %d: only %d inodes in disque\n", inodenum, disque->inodesList.nb);
-    return NULL;   
-  }
+/***************************
+Fonctions autres
+***************************/
 
-  Inode *current = disque->inodesList.first;
-  for(int i = 0; i < inodenum; i++) {
-    current = current->inodePost ;
+// décompose le chemin cible
+Inode decouperCibleChemin (char* arg, Disque* disque) {  
+	char* tab[MAX_INODES_DISQUE];
+	char* cs = NULL;
+	int i = 0;
+	int nombreDeSeparateur = 0;
+
+	for(int i=0; i<strlen(arg); i++){
+		if(arg[i] == 47) { //  code ASCII du "/"
+			nombreDeSeparateur++;
+		}	
+	}	
+
+	char string[500]; // commande de 500 caracteres max
+	strcpy(string, arg);
+  char *p;
+ 	p = strtok(string, "/");
+	while (p != NULL) {
+		tab[i] = p;
+		i++;
+		p = strtok(NULL, "/");
 	}
-  return current;
+	return chercherCibleChemin(tab[nombreDeSeparateur-1], tab[nombreDeSeparateur-2], disque);
 }
 
-void ajoutInode(Disque *disque) {//ajoute une inode libre dans le disque
-  //initialisation:
-  Inode *new = malloc(sizeof(Inode));
-  Inode *last =  disque->inodesList.first;
-  new->inodePost = NULL;
-  new->type=0;
-  
-  //PERMISSIONS a faire ici
-
-  //ajout dans la liste:
-  if(disque->inodesList.first == NULL) {
-    disque->inodesList.first = new;
-    disque->inodesList.nb = 1;
-    return;
-  }
- 
-  while (last->inodePost != NULL) { 
-    last = last->inodePost;
-  } 
-  last->inodePost = new;
-  
-  //mise a jour du nombre d'éléments
-  disque->inodesList.nb += 1;
-}*/
+// cherche la cible
+Inode chercherCibleChemin(char* nom, char * nomParent, Disque* disque) {	// Pour les futurs chemins 
+	for(int i=0; i<(disque->nbInodes); i++) {
+		if(strcmp(nom,disque->listeInodes[i].nom) == 0 && strcmp(nomParent,disque->listeInodes[i].inodePre->nom) == 0) {
+			return disque->listeInodes[i];
+		}
+	}
+}
